@@ -11,18 +11,17 @@ Listing.destroy_all
 puts 'Creating 25 users/listings...'
 
 25.times do |i|
-  user = User.create!(
+ user = User.create!(
     name: Faker::Name.first_name,
     email: Faker::Internet.unique.email,
     password: 123456
     )
-    Listing.create!(
-        user: user,
-        location: Faker::Address.city,
-        instrument: Faker::Music.instrument ,
-        style: Faker::Music.genre
+ Listing.create!(
+    user: user,
+    location: Faker::Address.city,
+    instrument: Faker::Music.instrument ,
+    style: Faker::Music.genre
     )
-    puts "#{i + 1} - #{user.name}"
-
-  end
+ puts "#{i + 1} - #{user.name} - #{user.listings.first.instrument} - #{user.listings.first.style} - #{user.listings.first.location}"
+ end
       puts 'Finished!'
