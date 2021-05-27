@@ -30,10 +30,17 @@
           <% end %>
         </div>
         <br>
+        <div class="itemo">
+         <p> User signed in : <%= user_signed_in? %>
+         <br>
+         <% if current_user %>
+          User is => <%= current_user.first_name %>
+         <%end%></p>
+        </div>
         <div class="container">
           <% @listings.each do |listing|%>
           <div class="itemo">
-            <p>name : <%= listing.user.first_name %><br>  
+            <p>name : <%= listing.user.first_name %> <%= listing.user.last_name %><br>  
             band : <%= listing.band %><br>       
             style : <%= listing.style %><br>           
             instrument : <%= listing.instrument %><br>               
