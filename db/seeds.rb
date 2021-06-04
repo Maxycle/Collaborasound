@@ -12,16 +12,17 @@ puts 'Creating 25 users/listings...'
 
 25.times do |i|
  user = User.create!(
-    name: Faker::Name.first_name,
+    first_name: Faker::Name.first_name,
     email: Faker::Internet.unique.email,
     password: 123456
     )
  Listing.create!(
     user: user,
+    band: Faker::Name.last_name,
     location: Faker::Address.city,
     instrument: Faker::Music.instrument ,
     style: Faker::Music.genre
     )
- puts "#{i + 1} - #{user.name} - #{user.listings.first.instrument} - #{user.listings.first.style} - #{user.listings.first.location}"
+ puts "#{i + 1} - #{user.first_name} - #{user.listings.first.instrument} - #{user.listings.first.style} - #{user.listings.first.location}"
  end
       puts 'Finished!'
