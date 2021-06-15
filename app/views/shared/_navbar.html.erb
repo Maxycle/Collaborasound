@@ -1,6 +1,11 @@
 <div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
     <div class="nav-item">
       <a href="http://localhost:3000/"><%= image_tag "https://pngimg.com/uploads/trumpet_saxophone/trumpet_saxophone_PNG14742.png", size: "35x25" %></a>
+      <% if user_signed_in? %>
+          <% if !current_page?(dashboard_path) %>
+            <%= link_to "Dashboard", dashboard_path, class: "navbar-link hvr-underline-from-left-dashboard" %>
+          <% end %>
+      <% end %>
     </div>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

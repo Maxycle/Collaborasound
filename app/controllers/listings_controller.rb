@@ -58,6 +58,6 @@ class ListingsController < ApplicationController
   private
 
   def listing_params
-    params.require(:listing).permit(:style, :instrument, :band, :location)
+    params.require(:listing).permit(:style, :instrument, :band, :location, :original_song)
   end
 end

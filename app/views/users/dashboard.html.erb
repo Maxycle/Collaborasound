@@ -1,0 +1,22 @@
+<div class="container">
+    <h5 class="itemo">The dashmozerfuckinboard !!</h5>
+    <div class="container">
+          <% @listings.each do |listing|%>
+          <div >
+            <div class="itemo">
+              <p>
+              band : <%= listing.band %><br>       
+              style : <%= listing.style %><br>           
+              instrument : <%= listing.instrument %><br>               
+              location : <%= listing.location %><br></p>
+              <%= link_to "check me out", listing_path(listing), class: "btn btn-primary btn-improved" %>
+              <% if listing.original_song.attached? %>
+                <audio controls>
+                  <source src="http://localhost:3000<%=url_for(listing.original_song)%>" type="audio/mpeg">
+                </audio>
+              <% end %>
+            </div>
+          </div>
+          <% end %>
+        </div>
+</div>

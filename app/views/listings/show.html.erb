@@ -1,0 +1,13 @@
+<div class="container">
+    <div class="itemo">
+            <p>name : <%= @listing.user.first_name %> <%= @listing.user.last_name %><br>  
+            band : <%= @listing.band %><br>       
+            style : <%= @listing.style %><br>           
+            instrument : <%= @listing.instrument %><br>               
+            location : <%= @listing.location %><br>
+            original_song : <%= url_for(@listing.original_song) %><br>
+            picture : <%= url_for(@listing.user.photo) %><br>
+            <img src="<% url_for(@listing.user.photo) %>" alt="Girl in a jacket" width="50" height="60">
+            </p>
+    </div>
+</div>

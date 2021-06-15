@@ -39,12 +39,20 @@
         </div>
         <div class="container">
           <% @listings.each do |listing|%>
-          <div class="itemo">
-            <p>name : <%= listing.user.first_name %> <%= listing.user.last_name %><br>  
-            band : <%= listing.band %><br>       
-            style : <%= listing.style %><br>           
-            instrument : <%= listing.instrument %><br>               
-            location : <%= listing.location %></p>
+          <div >
+            <div class="itemo">
+              <p>name : <%= listing.user.first_name %> <%= listing.user.last_name %><br>  
+              band : <%= listing.band %><br>       
+              style : <%= listing.style %><br>           
+              instrument : <%= listing.instrument %><br>               
+              location : <%= listing.location %><br></p>
+              <%= link_to "check me out", listing_path(listing), class: "btn btn-primary btn-improved" %>
+              <% if listing.original_song.attached? %>
+                <audio controls>
+                  <source src="http://localhost:3000<%=url_for(listing.original_song)%>" type="audio/mpeg">
+                </audio>
+              <% end %>
+            </div>
           </div>
           <% end %>
         </div>
