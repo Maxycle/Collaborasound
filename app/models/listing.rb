@@ -1,5 +1,6 @@
 class Listing < ApplicationRecord
     belongs_to :user
+    has_many :results, dependent: :destroy
     has_one_attached :original_song
 
       include PgSearch::Model

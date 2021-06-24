@@ -1,0 +1,15 @@
+<h1>Results</h1>
+<div class="container">
+    <% @results.each do |result|%>
+      <div class="itemo">
+        <p>Comment : <%= result.comment %></p><br>
+        <div>
+          <% if result.result_song.attached? %> 
+                  <audio controls>
+                    <source src="http://localhost:3000<%=url_for(result.result_song)%>" type="audio/mpeg">
+                  </audio>
+          <% end %> 
+        </div>
+      </div>
+    <% end %>
+</div>
