@@ -3,16 +3,28 @@
     margin-bottom: 25px ;
     background: rgb(238, 161, 47);
     width: 80%;
-    display: flex;
-    justify-content: center;
     border: 3px solid rgba(0,0,0,0.2);
     padding: 10px;
     box-shadow: 5px 5px rgba(0,0,0,0.2);
     border-radius: 10px;
   }
 
+  .flexcenter {
+    display: flex;
+    justify-content: space-around;
+  }
   .mg {
       margin-left: 5px;
       margin-right: 5px;
       border-radius: 5px;
+  }
+
+  #info {
+      width: 600px;
+  }
+
+  #action {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
   }

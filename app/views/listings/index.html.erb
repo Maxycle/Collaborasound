@@ -31,27 +31,42 @@
         </div>
         <br>
         <div class="itemo">
-         <p> User signed in : <%= user_signed_in? %>
-         <br>
          <% if current_user %>
-          User is => <%= current_user.first_name %>
-         <%end%></p>
+          Hello <%= current_user.username %>
+         <%end%>
         </div>
         <div class="container">
           <% @listings.each do |listing|%>
           <div >
-            <div class="itemo">
-              <p>name : <%= listing.user.first_name %> <%= listing.user.last_name %><br>  
-              band : <%= listing.band %><br>       
-              style : <%= listing.style %><br>           
-              instrument : <%= listing.instrument %><br>               
-              location : <%= listing.location %><br></p>
-              <%= link_to "check me out", listing_path(listing), class: "btn btn-primary btn-improved" %>
-              <% if listing.original_song.attached? %>
-                <audio controls>
-                  <source src="http://localhost:3000<%=url_for(listing.original_song)%>" type="audio/mpeg">
-                </audio>
-              <% end %>
+            <div class="itemo flexcenter">
+              <div id="info">
+                <div class="itemo">
+                  <p>user : <%= listing.user.username %> (<%= listing.user.first_name %> <%= listing.user.last_name %>)<br>  
+                  band : <%= listing.band %><br>       
+                  style : <%= listing.style %><br>           
+                  instrument : <%= listing.instrument %><br>               
+                  location : <%= listing.location %><br>
+                  comment : <%= listing.comment %></p>
+                </div>
+              </div>
+              <div id="action">
+                <div class="itemo">
+                  <h3 class="flexcenter">ORIGINAL TRACK</h3>
+                  <div class="flexcenter">
+                    <% if listing.original_song.attached? %>
+                      <audio controls>
+                        <source src="http://localhost:3000<%=url_for(listing.original_song)%>" type="audio/mpeg">
+                      </audio>
+                    <% else %>
+                      <p>No track...</p>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="flexcenter">
+                  <%= link_to "listen to results", listing_results_path(listing), class: "btn btn-primary btn-improved" %>
+                  <%= link_to "upload your work ", new_listing_result_path(listing), class: "btn btn-primary btn-improved" %>
+                </div>
+              </div>
             </div>
           </div>
           <% end %>
