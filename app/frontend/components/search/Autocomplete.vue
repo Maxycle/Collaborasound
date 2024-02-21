@@ -2,7 +2,7 @@
 	<div>
 		<!-- <label for="autocomplete" class="text-white">{{ header }}</label> -->
 		<div class="relative">
-			<input type="text" id="autocomplete" :placeholder="placeholder" v-model="selectedItem" @input="filterItems"
+			<input type="text" id="autocomplete" :placeholder="placeholder" v-model="selectedItem" @input="onInput"
 				class="bg-gray-300 py-2 px-4 flex justify-between items-center rounded w-full" />
 			<ul v-if="filteredItems.length" class="absolute z-10 mt-2 bg-white border rounded shadow-md w-full">
 				<li v-for="item in filteredItems" :key="item" @click="selectItem(item)" class="p-4 rounded hover:bg-blue-500">
@@ -65,18 +65,29 @@ export default {
 			this.$emit('item-selected', { queryParam: this.heading, queryParamValue: this.selectedItem, queryParamId: this.selectedItemId })
 		},
 
+		onInput() {
+			if (this.selectedItem === '') {
+				this.selectedItemId = undefined;
+				this.filteredItems = []
+				this.$emit('item-selected', { queryParam: this.heading, queryParamValue: '', queryParamId: undefined });
+			} else {
+				this.$emit('item-inputted', { queryParam: this.heading, queryParamValue: this.selectedItem });
+				this.filterItems();
+			}
+		},
+
 		updateUrlToFetch(heading) {
 			switch (heading) {
 				case 'Instrument recherchié':
-					this.urlToFetch = '/instrus'
+					this.urlToFetch = '/instruments'
 					this.placeholder = 'Chainsaw'
 					break;
 				case 'Genre de zikmu':
-					this.urlToFetch = '/genrus'
+					this.urlToFetch = '/genres'
 					this.placeholder = 'Fuck metal'
 					break;
 				case 'Où ca ??':
-					this.urlToFetch = '/locs'
+					this.urlToFetch = '/locations'
 					this.placeholder = 'Islamaverybad'
 					break;
 				case 'trackTitle':

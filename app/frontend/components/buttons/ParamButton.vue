@@ -1,8 +1,8 @@
 <template>
   <button
-    class="bg-red-500 flex border-2 border-green-500 text-xs m-1 hover:bg-blue-700 text-white py-2 pl-4 pr-2 rounded-l-full rounded-r-full" @click="kruigh">
+    class="bg-red-500 flex border-2 border-green-500 text-xs m-1 hover:bg-blue-700 text-white py-2 pl-4 pr-2 rounded-l-full rounded-r-full">
     {{ heading }}
-    <CloseRound class="ml-2 w-4" />
+    <CloseRound class="ml-2 w-4" @click="kruigh"/>
   </button>
 </template>
 
@@ -29,7 +29,7 @@ export default {
 
   methods: {
     kruigh() {
-      this.$emit('removedd', 66669)
+      this.$emit('removedd', this.heading)
     }
   }
 }

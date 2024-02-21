@@ -7,23 +7,23 @@
 						<div v-for="label in newProjectParams" class="">{{ label.name }}</div>
 						<div>Track title</div>
 						<div v-for="param in newProjectParams" :key="param.name" class="">
-							<Autocomplete :heading="param.name" @item-selected="addParameters" />
+							<Autocomplete :heading="param.name" @item-selected="addParameters" @item-inputted="onNewItemInput" />
 						</div>
 						<input type="text" id="autocomplete" placeholder="Allah Akbar" v-model="trackTitle"
 							class="bg-gray-300 py-2 px-4 flex justify-between items-center rounded w-full" />
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in genresList" :key="item">
-								<ParamButton :heading="item" @removedd="zlak" />
+								<ParamButton :heading="item" @removedd="removeParameters('Genre de zikmu')" />
 							</div>
 						</div>
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in instrumentsList" :key="item">
-								<ParamButton :heading="item" @removedd="zlak" />
+								<ParamButton :heading="item" @removedd="removeParameters('Instrument recherchié')" />
 							</div>
 						</div>
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in locationsList" :key="item">
-								<ParamButton :heading="item" @removedd="zlak" />
+								<ParamButton :heading="item" @removedd="removeParameters('Où ca ??')" />
 							</div>
 						</div>
 						<button
@@ -45,7 +45,6 @@ import Container from '../containers/Container.vue'
 import Autocomplete from '../search/Autocomplete.vue'
 import ParamButton from '../buttons/ParamButton.vue'
 
-
 export default {
 	components: {
 		Container,
@@ -56,6 +55,9 @@ export default {
 	data() {
 		return {
 			trackTitle: '',
+			newInstrument: '',
+			newGenre: '',
+			newLocation: '',
 			instrumentParamId: undefined,
 			genreParamId: undefined,
 			locationParamId: undefined,
@@ -74,61 +76,98 @@ export default {
 
 	methods: {
 		async createTrack() {
-			axios.create()
-			try {
-				const response = await axios.post('/tracks', {
-					music_track: {
-						title: this.trackTitle,
-						instrument_wanted_id: this.instrumentParamId,
-						music_genre_id: this.genreParamId,
-						location_id: this.locationParamId,
-						user_id: 3
-					}
-				})
-				// Handle success response
-				console.log('New track created:', response.data);
-			} catch (error) {
-				// Handle error
-				console.error('Error creating track:', error);
-			}
-		},
+      if (this.instrumentParamId === undefined) {
+        await this.createResource('instruments', this.newInstrument, 'newInstrument', 'instrumentParamId');
+      }
+
+      if (this.genreParamId === undefined) {
+        await this.createResource('genres', this.newGenre, 'newGenre', 'genreParamId');
+      }
+
+      if (this.locationParamId === undefined) {
+        await this.createResource('locations', this.newLocation, 'newLocation', 'locationParamId');
+      }
+
+      try {
+        const response = await axios.post('/tracks', {
+          music_track: {
+            title: this.trackTitle,
+            instrument_wanted_id: this.instrumentParamId,
+            music_genre_id: this.genreParamId,
+            location_id: this.locationParamId,
+            user_id: 3
+          }
+        })
+        console.log('New track created:', response.data);
+      } catch (error) {
+        console.error('Error creating track:', error);
+      }
+    },
+
+    async createResource(endpoint, value, dataProp, idProp) {
+      try {
+        const response = await axios.post(`/${endpoint}`, { [endpoint.slice(0, -1)]: { name: value } });
+        this[dataProp] = '';
+        this[idProp] = response.data.id;
+        console.log(`New ${endpoint} created:`, response.data);
+      } catch (error) {
+        console.error(`Error creating ${endpoint}:`, error);
+      }
+    },
 
 		addParameters(obj) {
-			switch (obj.queryParam) {
-				case 'Instrument recherchié':
-					this.instrumentsList.push(obj.queryParamValue)
-					break;
-				case 'Genre de zikmu':
-					this.genresList.push(obj.queryParamValue)
-					break;
-				case 'Où ca ??':
-					this.locationsList.push(obj.queryParamValue)
-					break;
-				default:
-					urlToFetch = '/tracks';
+			if (obj.queryParamValue !== '') {
+				switch (obj.queryParam) {
+					case 'Instrument recherchié':
+						this.instrumentsList.push(obj.queryParamValue)
+						this.instrumentParamId = obj.queryParamId
+						break;
+					case 'Genre de zikmu':
+						this.genresList.push(obj.queryParamValue)
+						this.genreParamId = obj.queryParamId
+						break;
+					case 'Où ca ??':
+						this.locationsList.push(obj.queryParamValue)
+						this.locationParamId = obj.queryParamId
+						break;
+					default:
+					this.urlToFetch = '/tracks';
+				}
 			}
 		},
 
-		zlak(x) {
-			console.log('ta mère', x)
-		}
+		onNewItemInput(obj) {
+			switch (obj.queryParam) {
+					case 'Instrument recherchié':
+						this.newInstrument = obj.queryParamValue
+						break;
+					case 'Genre de zikmu':
+						this.newGenre = obj.queryParamValue
+						break;
+					case 'Où ca ??':
+						this.newLocation = obj.queryParamValue
+						break;
+					default:
+					this.urlToFetch = 'kruigh';
+				}
+		},
 
-		// addFieldParamToUrl(obj) {
-		// 	console.log('in ze obj', obj)
-		// 	switch (obj.queryParam) {
-		// 		case 'Instrument recherchié':
-		// 			this.instrumentParamId = obj.queryParamId
-		// 			break;
-		// 		case 'Genre de zikmu':
-		// 			this.genreParamId = obj.queryParamId
-		// 			break;
-		// 		case 'Où ca ??':
-		// 			this.locationParamId = obj.queryParamId
-		// 			break;
-		// 		default:
-		// 			urlToFetch = '/tracks';
-		// 	}
-		// }
+		removeParameters(itemToRemove, additionalParameter) {
+			console.log("it's all removedd", additionalParameter)
+			switch (additionalParameter) {
+				case 'Instrument recherchié':
+					this.instrumentsList.filter(item => item !== itemToRemove)
+					break;
+				case 'Genre de zikmu':
+					this.genresList.filter(item => item !== itemToRemove)
+					break;
+				case 'Où ca ??':
+					this.locationsList.filter(item => item !== itemToRemove)
+					break;
+				default:
+				this.urlToFetch = '/tracks';
+			}
+		}
 	}
 }
 </script>

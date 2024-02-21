@@ -9,9 +9,17 @@ class GenresController < ApplicationController
   end
 
   def new
+    @genre = MusicGenre.new
   end
 
   def create
+    @genre = MusicGenre.new(instrument_params)
+    
+    if @genre.save
+      render json: @genre, status: :created
+    else
+      render json: @genre.errors, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -21,5 +29,11 @@ class GenresController < ApplicationController
   end
 
   def destroy
+  end
+
+  private
+
+  def instrument_params
+    params.require(:genre).permit(:name) # Permit only the 'name' parameter
   end
 end
