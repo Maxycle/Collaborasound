@@ -13,17 +13,17 @@
 							class="bg-gray-300 py-2 px-4 flex justify-between items-center rounded w-full" />
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in genresList" :key="item">
-								<ParamButton :heading="item" @removedd="removeParameters('Genre de zikmu')" />
+								<ParamButton :heading="item" @removedd="removeParameters('Genre de zikmu', item)" />
 							</div>
 						</div>
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in instrumentsList" :key="item">
-								<ParamButton :heading="item" @removedd="removeParameters('Instrument recherchié')" />
+								<ParamButton :heading="item" @removedd="removeParameters('Instrument recherchié', item)" />
 							</div>
 						</div>
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in locationsList" :key="item">
-								<ParamButton :heading="item" @removedd="removeParameters('Où ca ??')" />
+								<ParamButton :heading="item" @removedd="removeParameters('Où ca ??', item)" />
 							</div>
 						</div>
 						<button
@@ -76,44 +76,44 @@ export default {
 
 	methods: {
 		async createTrack() {
-      if (this.instrumentParamId === undefined) {
-        await this.createResource('instruments', this.newInstrument, 'newInstrument', 'instrumentParamId');
-      }
+			if (this.instrumentParamId === undefined) {
+				await this.createResource('instruments', this.newInstrument, 'newInstrument', 'instrumentParamId');
+			}
 
-      if (this.genreParamId === undefined) {
-        await this.createResource('genres', this.newGenre, 'newGenre', 'genreParamId');
-      }
+			if (this.genreParamId === undefined) {
+				await this.createResource('genres', this.newGenre, 'newGenre', 'genreParamId');
+			}
 
-      if (this.locationParamId === undefined) {
-        await this.createResource('locations', this.newLocation, 'newLocation', 'locationParamId');
-      }
+			if (this.locationParamId === undefined) {
+				await this.createResource('locations', this.newLocation, 'newLocation', 'locationParamId');
+			}
 
-      try {
-        const response = await axios.post('/tracks', {
-          music_track: {
-            title: this.trackTitle,
-            instrument_wanted_id: this.instrumentParamId,
-            music_genre_id: this.genreParamId,
-            location_id: this.locationParamId,
-            user_id: 3
-          }
-        })
-        console.log('New track created:', response.data);
-      } catch (error) {
-        console.error('Error creating track:', error);
-      }
-    },
+			try {
+				const response = await axios.post('/tracks', {
+					music_track: {
+						title: this.trackTitle,
+						instrument_wanted_id: this.instrumentParamId,
+						music_genre_id: this.genreParamId,
+						location_id: this.locationParamId,
+						user_id: 3
+					}
+				})
+				console.log('New track created:', response.data);
+			} catch (error) {
+				console.error('Error creating track:', error);
+			}
+		},
 
-    async createResource(endpoint, value, dataProp, idProp) {
-      try {
-        const response = await axios.post(`/${endpoint}`, { [endpoint.slice(0, -1)]: { name: value } });
-        this[dataProp] = '';
-        this[idProp] = response.data.id;
-        console.log(`New ${endpoint} created:`, response.data);
-      } catch (error) {
-        console.error(`Error creating ${endpoint}:`, error);
-      }
-    },
+		async createResource(endpoint, value, dataProp, idProp) {
+			try {
+				const response = await axios.post(`/${endpoint}`, { [endpoint.slice(0, -1)]: { name: value } });
+				this[dataProp] = '';
+				this[idProp] = response.data.id;
+				console.log(`New ${endpoint} created:`, response.data);
+			} catch (error) {
+				console.error(`Error creating ${endpoint}:`, error);
+			}
+		},
 
 		addParameters(obj) {
 			if (obj.queryParamValue !== '') {
@@ -131,43 +131,43 @@ export default {
 						this.locationParamId = obj.queryParamId
 						break;
 					default:
-					this.urlToFetch = '/tracks';
+						this.urlToFetch = '/tracks';
 				}
 			}
 		},
 
 		onNewItemInput(obj) {
 			switch (obj.queryParam) {
-					case 'Instrument recherchié':
-						this.newInstrument = obj.queryParamValue
-						break;
-					case 'Genre de zikmu':
-						this.newGenre = obj.queryParamValue
-						break;
-					case 'Où ca ??':
-						this.newLocation = obj.queryParamValue
-						break;
-					default:
-					this.urlToFetch = 'kruigh';
-				}
-		},
-
-		removeParameters(itemToRemove, additionalParameter) {
-			console.log("it's all removedd", additionalParameter)
-			switch (additionalParameter) {
 				case 'Instrument recherchié':
-					this.instrumentsList.filter(item => item !== itemToRemove)
+					this.newInstrument = obj.queryParamValue
 					break;
 				case 'Genre de zikmu':
-					this.genresList.filter(item => item !== itemToRemove)
+					this.newGenre = obj.queryParamValue
 					break;
 				case 'Où ca ??':
-					this.locationsList.filter(item => item !== itemToRemove)
+					this.newLocation = obj.queryParamValue
 					break;
 				default:
-				this.urlToFetch = '/tracks';
+					this.urlToFetch = 'kruigh';
+			}
+		},
+
+		removeParameters(additionalParameter, itemToRemove) {
+			switch (additionalParameter) {
+				case 'Instrument recherchié':
+					this.instrumentsList = this.instrumentsList.filter(item => item !== itemToRemove);
+					break;
+				case 'Genre de zikmu':
+					this.genresList = this.genresList.filter(item => item !== itemToRemove);
+					break;
+				case 'Où ca ??':
+					this.locationsList = this.locationsList.filter(item => item !== itemToRemove);
+					break;
+				default:
+					this.urlToFetch = '/tracks';
 			}
 		}
+
 	}
 }
 </script>
