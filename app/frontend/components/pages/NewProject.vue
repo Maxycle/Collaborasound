@@ -13,17 +13,17 @@
 							class="bg-gray-300 py-2 px-4 flex justify-between items-center rounded w-full" />
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in genresList" :key="item">
-								<ParamButton :heading="item" @removedd="removeParameters('Genre de zikmu', item)" />
+								<ParamButton :heading="item" removable @removedd="removeParameters('Genre de zikmu', item)" />
 							</div>
 						</div>
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in instrumentsList" :key="item">
-								<ParamButton :heading="item" @removedd="removeParameters('Instrument recherchié', item)" />
+								<ParamButton :heading="item" removable @removedd="removeParameters('Instrument recherchié', item)" />
 							</div>
 						</div>
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in locationsList" :key="item">
-								<ParamButton :heading="item" @removedd="removeParameters('Où ca ??', item)" />
+								<ParamButton :heading="item" removable @removedd="removeParameters('Où ca ??', item)" />
 							</div>
 						</div>
 						<button
