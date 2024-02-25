@@ -8,9 +8,9 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  band_id              :integer
-#  instrument_wanted_id :integer          not null
+#  instrument_wanted_id :integer
 #  location_id          :integer          not null
-#  music_genre_id       :integer          not null
+#  music_genre_id       :integer
 #  parent_id            :integer
 #  user_id              :integer          not null
 #
@@ -32,8 +32,10 @@
 #
 class MusicTrack < ApplicationRecord
     belongs_to :user  
-    belongs_to :instrument_wanted, class_name: "InstrumentWanted", foreign_key: "instrument_wanted_id"
-    belongs_to :music_genre, class_name: "MusicGenre", foreign_key: "music_genre_id"
+    has_many :instrument_wanted_music_tracks, dependent: :destroy
+  	has_many :instrument_wanteds, through: :instrument_wanted_music_tracks
+		has_many :music_genre_music_tracks, dependent: :destroy
+  	has_many :music_genres, through: :music_genre_music_tracks
     belongs_to :location, class_name: "Location", foreign_key: "location_id"
     belongs_to :band, class_name: "Band", foreign_key: "band_id", optional: true
     belongs_to :parent, class_name: "MusicTrack", foreign_key: "parent_id", optional: true

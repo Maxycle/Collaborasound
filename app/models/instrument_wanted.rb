@@ -8,5 +8,6 @@
 #  updated_at :datetime         not null
 #
 class InstrumentWanted < ApplicationRecord
-            
+	has_many :instrument_wanted_music_tracks, dependent: :destroy
+  has_many :music_tracks, through: :instrument_wanted_music_tracks
 end

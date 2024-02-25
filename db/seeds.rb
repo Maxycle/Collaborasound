@@ -55,31 +55,41 @@ end
 
   Location.create(name: unique_location)
 end
-# Creating fake tracks
+
 10.times do
-  MusicTrack.create(
-    title:Faker::Lorem.words(number: 3).join(' '),
-    music_genre_id:MusicGenre.pluck(:id).sample,
-    instrument_wanted_id:InstrumentWanted.pluck(:id).sample,
-    location_id:Location.pluck(:id).sample,
-    band_id:Band.pluck(:id).sample,
+  music_genre_ids = MusicGenre.pluck(:id).sample(4)
+  instrument_wanted_ids = InstrumentWanted.pluck(:id).sample(4)
+
+  music_track = MusicTrack.create(
+    title: Faker::Lorem.words(number: 3).join(' '),
+    location_id: Location.pluck(:id).sample,
+    band_id: Band.pluck(:id).sample,
     user_id: User.pluck(:id).sample,
     result: [true, false].sample
   )
+
+  music_genre_ids.each do |genre_id|
+    music_track.music_genres << MusicGenre.find(genre_id)
+  end
+
+  instrument_wanted_ids.each do |instrument_id|
+    music_track.instrument_wanteds << InstrumentWanted.find(instrument_id)
+  end
 end
 
-4.times do
-  MusicTrack.create(
-    title:MusicTrack.find(3).title,
-    music_genre_id:MusicTrack.find(3).music_genre_id,
-    instrument_wanted_id:MusicTrack.find(3).instrument_wanted_id,
-    location_id:MusicTrack.find(3).location_id,
-    band_id:MusicTrack.find(3).band_id,
-    user_id: MusicTrack.find(3).user_id,
-    parent_id: 3,
-    result: true
-  )
-end
+
+# 4.times do
+#   MusicTrack.create(
+#     title:MusicTrack.find(3).title,
+#     music_genre_id:MusicTrack.find(3).music_genre_id,
+#     instrument_wanted_id:MusicTrack.find(3).instrument_wanted_id,
+#     location_id:MusicTrack.find(3).location_id,
+#     band_id:MusicTrack.find(3).band_id,
+#     user_id: MusicTrack.find(3).user_id,
+#     parent_id: 3,
+#     result: true
+#   )
+# end
 # 3.times do
 #   MusicTrack.create(
 #     title:Faker::Lorem.words(number: 3).join(' '),

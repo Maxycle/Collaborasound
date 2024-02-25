@@ -8,9 +8,9 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  band_id              :integer
-#  instrument_wanted_id :integer          not null
+#  instrument_wanted_id :integer
 #  location_id          :integer          not null
-#  music_genre_id       :integer          not null
+#  music_genre_id       :integer
 #  parent_id            :integer
 #  user_id              :integer          not null
 #

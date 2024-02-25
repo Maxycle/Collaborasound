@@ -28,8 +28,8 @@ class TracksController < ApplicationController
 
   def show
     @music_track = MusicTrack.find(params[:id])
-    @music_genre_name = @music_track.music_genre.name
-    @instrument = @music_track.instrument_wanted.name
+		@music_genre_names = @music_track.music_genres.select(:id, :name)
+    @instruments = @music_track.instrument_wanteds.select(:id, :name)
     @author = @music_track.user.first_name
     @band_name = @music_track.band&.name || 'Krugh o marrons'
     @result = !@music_track.parent_id.nil?
@@ -40,8 +40,8 @@ class TracksController < ApplicationController
       created_at: @music_track.created_at,
       updated_at: @music_track.updated_at,
       author: @author,
-      music_genre: @music_genre_name,
-      instrument: @instrument,
+      music_genre: @music_genre_names,
+      instrument: @instruments,
       band: @band_name,
       isResult: @result
     }
