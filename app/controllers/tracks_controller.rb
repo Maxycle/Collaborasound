@@ -3,7 +3,7 @@ class TracksController < ApplicationController
     @listings = MusicTrack.order(created_at: :desc).where(parent_id: nil)
   
     if params[:instrument].present?
-      @listings = @listings.joins(:instrument_wanted).where("instrument_wanteds.name LIKE ?", "%#{params[:instrument]}%")
+      @listings = @listings.joins(:Instrument).where("Instruments.name LIKE ?", "%#{params[:instrument]}%")
       if params[:genre].present? 
         @listings = @listings.joins(:music_genre).where("music_genres.name LIKE ?", "%#{params[:genre]}%")
       end
@@ -29,7 +29,7 @@ class TracksController < ApplicationController
   def show
     @music_track = MusicTrack.find(params[:id])
 		@music_genre_names = @music_track.music_genres.select(:id, :name)
-    @instruments = @music_track.instrument_wanteds.select(:id, :name)
+    @instruments = @music_track.instruments.select(:id, :name)
     @author = @music_track.user.first_name
     @band_name = @music_track.band&.name || 'Krugh o marrons'
     @result = !@music_track.parent_id.nil?
@@ -40,8 +40,8 @@ class TracksController < ApplicationController
       created_at: @music_track.created_at,
       updated_at: @music_track.updated_at,
       author: @author,
-      music_genre: @music_genre_names,
-      instrument: @instruments,
+      music_genres: @music_genre_names,
+      instruments: @instruments,
       band: @band_name,
       isResult: @result
     }
@@ -73,6 +73,6 @@ class TracksController < ApplicationController
   private
 
   def track_params
-    params.require(:music_track).permit(:title, :user_id, :instrument_wanted_id, :music_genre_id, :location_id, :result, :band_id, :parent_id)
-  end
+		params.require(:music_track).permit(:title, :user_id, :location_id, :band_id, :parent_id, instrument_ids: [], music_genre_ids: [])
+	end
 end

@@ -40,11 +40,11 @@ end
 
 10.times do
   unique_instrument = nil
-  while unique_instrument.nil? || InstrumentWanted.exists?(name: unique_instrument)
+  while unique_instrument.nil? || Instrument.exists?(name: unique_instrument)
     unique_instrument = Faker::Music.instrument
   end
 
-  InstrumentWanted.create(name: unique_instrument)
+  Instrument.create(name: unique_instrument)
 end
 
 15.times do
@@ -58,22 +58,21 @@ end
 
 10.times do
   music_genre_ids = MusicGenre.pluck(:id).sample(4)
-  instrument_wanted_ids = InstrumentWanted.pluck(:id).sample(4)
+  instrument_ids = Instrument.pluck(:id).sample(4)
 
   music_track = MusicTrack.create(
     title: Faker::Lorem.words(number: 3).join(' '),
     location_id: Location.pluck(:id).sample,
     band_id: Band.pluck(:id).sample,
-    user_id: User.pluck(:id).sample,
-    result: [true, false].sample
+    user_id: User.pluck(:id).sample
   )
 
   music_genre_ids.each do |genre_id|
     music_track.music_genres << MusicGenre.find(genre_id)
   end
 
-  instrument_wanted_ids.each do |instrument_id|
-    music_track.instrument_wanteds << InstrumentWanted.find(instrument_id)
+  instrument_ids.each do |instrument_id|
+    music_track.instruments << Instrument.find(instrument_id)
   end
 end
 
@@ -82,22 +81,20 @@ end
 #   MusicTrack.create(
 #     title:MusicTrack.find(3).title,
 #     music_genre_id:MusicTrack.find(3).music_genre_id,
-#     instrument_wanted_id:MusicTrack.find(3).instrument_wanted_id,
+#     Instrument_id:MusicTrack.find(3).Instrument_id,
 #     location_id:MusicTrack.find(3).location_id,
 #     band_id:MusicTrack.find(3).band_id,
 #     user_id: MusicTrack.find(3).user_id,
-#     parent_id: 3,
-#     result: true
+#     parent_id: 3
 #   )
 # end
 # 3.times do
 #   MusicTrack.create(
 #     title:Faker::Lorem.words(number: 3).join(' '),
 #     music_genre_id:MusicGenre.pluck(:id).sample,
-#     instrument_wanted_id:InstrumentWanted.pluck(:id).sample,
+#     Instrument_id:Instrument.pluck(:id).sample,
 #     location_id:Location.pluck(:id).sample,
 #     band_id:Band.pluck(:id).sample,
-#     user_id: User.pluck(:id).sample,
-#     result: [true, false].sample
+#     user_id: User.pluck(:id).sample
 #   )
 # end

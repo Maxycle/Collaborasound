@@ -1,16 +1,13 @@
 # == Schema Information
 #
-# Table name: Instruments
+# Table name: instruments
 #
 #  id         :integer          not null, primary key
 #  name       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-require "test_helper"
-
-class InstrumentTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class Instrument < ApplicationRecord
+	has_many :instrument_music_tracks, dependent: :destroy
+  has_many :music_tracks, through: :instrument_music_tracks
 end

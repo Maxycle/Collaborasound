@@ -1,6 +1,6 @@
 class InstrumentsController < ApplicationController
   def index
-    instruments = InstrumentWanted.select(:id, :name)
+    instruments = Instrument.select(:id, :name)
 
     render json: instruments
   end
@@ -9,11 +9,11 @@ class InstrumentsController < ApplicationController
   end
 
   def new
-    @instrument = InstrumentWanted.new
+    @instrument = Instrument.new
   end
 
   def create
-    @instrument = InstrumentWanted.new(instrument_params)
+    @instrument = Instrument.new(instrument_params)
     
     if @instrument.save
       render json: @instrument, status: :created

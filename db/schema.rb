@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_24_212602) do
+ActiveRecord::Schema.define(version: 2024_02_22_180206) do
 
   create_table "bands", force: :cascade do |t|
     t.string "name"
@@ -18,16 +18,16 @@ ActiveRecord::Schema.define(version: 2024_02_24_212602) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "instrument_wanted_music_tracks", force: :cascade do |t|
-    t.integer "instrument_wanted_id", null: false
+  create_table "instrument_music_tracks", force: :cascade do |t|
+    t.integer "instrument_id", null: false
     t.integer "music_track_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["instrument_wanted_id"], name: "index_instrument_wanted_music_tracks_on_instrument_wanted_id"
-    t.index ["music_track_id"], name: "index_instrument_wanted_music_tracks_on_music_track_id"
+    t.index ["instrument_id"], name: "index_instrument_music_tracks_on_instrument_id"
+    t.index ["music_track_id"], name: "index_instrument_music_tracks_on_music_track_id"
   end
 
-  create_table "instrument_wanteds", force: :cascade do |t|
+  create_table "instruments", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -59,15 +59,10 @@ ActiveRecord::Schema.define(version: 2024_02_24_212602) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id", null: false
-    t.integer "instrument_wanted_id"
-    t.integer "music_genre_id"
     t.integer "location_id", null: false
-    t.boolean "result"
     t.integer "band_id"
     t.integer "parent_id"
-    t.index ["instrument_wanted_id"], name: "index_music_tracks_on_instrument_wanted_id"
     t.index ["location_id"], name: "index_music_tracks_on_location_id"
-    t.index ["music_genre_id"], name: "index_music_tracks_on_music_genre_id"
     t.index ["parent_id"], name: "index_music_tracks_on_parent_id"
     t.index ["user_id"], name: "index_music_tracks_on_user_id"
   end
@@ -86,13 +81,11 @@ ActiveRecord::Schema.define(version: 2024_02_24_212602) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "instrument_wanted_music_tracks", "instrument_wanteds"
-  add_foreign_key "instrument_wanted_music_tracks", "music_tracks"
+  add_foreign_key "instrument_music_tracks", "instruments"
+  add_foreign_key "instrument_music_tracks", "music_tracks"
   add_foreign_key "music_genre_music_tracks", "music_genres"
   add_foreign_key "music_genre_music_tracks", "music_tracks"
-  add_foreign_key "music_tracks", "instrument_wanteds"
   add_foreign_key "music_tracks", "locations"
-  add_foreign_key "music_tracks", "music_genres"
   add_foreign_key "music_tracks", "music_tracks", column: "parent_id", on_delete: :cascade
   add_foreign_key "music_tracks", "users"
 end

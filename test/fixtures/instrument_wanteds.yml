@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: instrument_wanteds
+# Table name: Instruments
 #
 #  id         :integer          not null, primary key
 #  name       :string

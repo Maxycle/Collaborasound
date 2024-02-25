@@ -18,7 +18,7 @@
 #  music_genre_id  (music_genre_id => music_genres.id)
 #  music_track_id  (music_track_id => music_tracks.id)
 #
-# app/models/instrument_wanted_music_track.rb
+# app/models/Instrument_music_track.rb
 class MusicGenreMusicTrack < ApplicationRecord
   belongs_to :music_genre
   belongs_to :music_track
