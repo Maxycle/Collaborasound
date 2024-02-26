@@ -6,5 +6,6 @@ Rails.application.routes.draw do
   resources :genres, only: [:index, :new, :create]
   resources :locations, only: [:index, :new, :create]
   get '/index_results/:id', to: 'tracks#index_results', as: 'index_results'
+	get '*path', to: 'pages#home'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
