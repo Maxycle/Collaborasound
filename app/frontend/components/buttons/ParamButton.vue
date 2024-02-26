@@ -1,6 +1,6 @@
 <template>
-	<button
-		class="bg-red-500 flex border-2 border-green-500 text-xs m-1 hover:bg-blue-700 text-white py-2 pl-4 pr-2 rounded-l-full rounded-r-full">
+	<button class="flex justify-center min-w-16 border-2 
+		border-green-500 text-xs m-1 hover:bg-blue-700 text-white py-2 px-2 rounded-full" :class="bgColor">
 		{{ heading }}
 		<div v-if="removable">
 			<CloseRound class="ml-2 w-4" @click="kruigh" />
@@ -21,6 +21,10 @@ export default {
 			type: String,
 			default: 'ta mère en short',
 		},
+		color: {
+			type: String,
+			default: 'yellow'
+		},
 		removable: {
 			type: Boolean,
 			default: false
@@ -30,6 +34,22 @@ export default {
 	data() {
 		return {
 
+		}
+	},
+
+	computed: {
+		bgColor() {
+			switch (this.color) {
+				case 'yellow':
+					return 'bg-yellow-400'
+					break;
+				case 'red':
+					return 'bg-red-400'
+					break;
+				case 'blue':
+					return 'bg-blue-400'
+					break;
+			}
 		}
 	},
 
