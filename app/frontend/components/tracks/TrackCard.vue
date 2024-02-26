@@ -28,7 +28,7 @@
 					<p>Track id: {{ trackId }}</p>
 				</router-link>
 			</div>
-			<div v-else>See what people say</div>
+			<div v-else>See what people say {{ trackId }}</div>
 		</div>
 	</div>
 </template>
