@@ -22,7 +22,7 @@ class TracksController < ApplicationController
 
     @children_tracks = @parent_track.children
 
-    @children_tracks = @children_tracks.select(:id)
+    @children_tracks = @children_tracks.select(:id, :parent_id)
     render json: @children_tracks
   end
 
