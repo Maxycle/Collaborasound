@@ -58,9 +58,11 @@ export default {
 			newInstrument: '',
 			newGenre: '',
 			newLocation: '',
+			instrumentParamIds: [],
+			genreParamIds: [],
+			locationParamId: undefined,
 			instrumentParamId: undefined,
 			genreParamId: undefined,
-			locationParamId: undefined,
 			urlToFetch: '',
 			instrumentsList: [],
 			genresList: [],
@@ -69,7 +71,6 @@ export default {
 				{ name: 'Genre de zikmu', value: '12' },
 				{ name: 'Instrument recherchié', value: '300+' },
 				{ name: 'Où ca ??', value: '40' }
-				// { name: 'trackTitle', value: 'kruUugh'}
 			]
 		}
 	},
@@ -77,23 +78,23 @@ export default {
 	methods: {
 		async createTrack() {
 			if (this.instrumentParamId === undefined) {
-				await this.createResource('instruments', this.newInstrument, 'newInstrument', 'instrumentParamId');
+				await this.createResource('instruments', this.newInstrument, 'newInstrument', 'instrumentParamIds');
 			}
 
 			if (this.genreParamId === undefined) {
-				await this.createResource('genres', this.newGenre, 'newGenre', 'genreParamId');
+				await this.createResource('genres', this.newGenre, 'newGenre', 'genreParamIds');
 			}
 
 			if (this.locationParamId === undefined) {
-				await this.createResource('locations', this.newLocation, 'newLocation', 'locationParamId');
+				await this.createResource('locations', this.newLocation, 'newLocation', 'locationParamIds');
 			}
 
 			try {
 				const response = await axios.post('/tracks', {
 					music_track: {
 						title: this.trackTitle,
-						instrument_wanted_id: this.instrumentParamId,
-						music_genre_id: this.genreParamId,
+						instrument_ids: this.instrumentParamIds,
+						music_genre_ids: this.genreParamIds,
 						location_id: this.locationParamId,
 						user_id: 3
 					}
@@ -104,11 +105,11 @@ export default {
 			}
 		},
 
-		async createResource(endpoint, value, dataProp, idProp) {
+		async createResource(endpoint, value, dataProp, idsProp) {
 			try {
 				const response = await axios.post(`/${endpoint}`, { [endpoint.slice(0, -1)]: { name: value } });
 				this[dataProp] = '';
-				this[idProp] = response.data.id;
+				this[idsProp].push(response.data.id)
 				console.log(`New ${endpoint} created:`, response.data);
 			} catch (error) {
 				console.error(`Error creating ${endpoint}:`, error);
@@ -121,10 +122,12 @@ export default {
 					case 'Instrument recherchié':
 						this.instrumentsList.push(obj.queryParamValue)
 						this.instrumentParamId = obj.queryParamId
+						this.instrumentParamIds.push(this.instrumentParamId)
 						break;
 					case 'Genre de zikmu':
 						this.genresList.push(obj.queryParamValue)
 						this.genreParamId = obj.queryParamId
+						this.genreParamIds.push(this.genreParamId)
 						break;
 					case 'Où ca ??':
 						this.locationsList.push(obj.queryParamValue)
@@ -139,9 +142,11 @@ export default {
 		onNewItemInput(obj) {
 			switch (obj.queryParam) {
 				case 'Instrument recherchié':
+					this.instrumentParamId = undefined
 					this.newInstrument = obj.queryParamValue
 					break;
 				case 'Genre de zikmu':
+					this.genreParamId = undefined
 					this.newGenre = obj.queryParamValue
 					break;
 				case 'Où ca ??':

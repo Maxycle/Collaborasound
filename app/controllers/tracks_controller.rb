@@ -3,14 +3,14 @@ class TracksController < ApplicationController
     @listings = MusicTrack.order(created_at: :desc).where(parent_id: nil)
   
     if params[:instrument].present?
-      @listings = @listings.joins(:Instrument).where("Instruments.name LIKE ?", "%#{params[:instrument]}%")
+      @listings = @listings.joins(:instruments).where("instruments.name LIKE ?", "%#{params[:instrument]}%")
       if params[:genre].present? 
-        @listings = @listings.joins(:music_genre).where("music_genres.name LIKE ?", "%#{params[:genre]}%")
+        @listings = @listings.joins(:music_genres).where("music_genres.name LIKE ?", "%#{params[:genre]}%")
       end
     elsif params[:genre].present?
-      @listings = @listings.joins(:music_genre).where("music_genres.name LIKE ?", "%#{params[:genre]}%")
+      @listings = @listings.joins(:music_genres).where("music_genres.name LIKE ?", "%#{params[:genre]}%")
     elsif params[:location].present?
-      @listings = @listings.joins(:location).where("locations.name LIKE ?", "%#{params[:location]}%")
+      @listings = @listings.joins(:locations).where("locations.name LIKE ?", "%#{params[:location]}%")
     end
 
     @listings = @listings.select(:id)
