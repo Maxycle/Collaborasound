@@ -3,15 +3,10 @@
 		<div
 			class="bg-orange-300 border-2 border-green-600 rounded-2xl flex items-center justify-center space-y-4 w-full p-4">
 			<div class="w-4/5">
-				<div v-if="!isResult">
-					<div v-for="track in trackListIds" :key="track.title" class="">
-						<TrackCard :trackId="track.id" class="w-full my-2" />
-					</div>
-				</div>
-				<div v-else>
-					<div v-for="track in childrenIds" :key="track.title" class="">
-						<TrackCard :trackId="track.id" class="w-full my-2" />
-					</div>
+				<p v-if="isMyTracks" class="text-2xl font-bold flex justify-center">My tracks</p>
+				<p v-else-if="isResult" class="text-2xl font-bold flex justify-center">People's collaborations</p>
+				<div v-for="track in currentTrackList" :key="track.title" class="">
+					<TrackCard :trackId="track.id" class="w-full my-2" />
 				</div>
 			</div>
 		</div>
@@ -32,6 +27,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		isMyTracks: {
+			type: Boolean,
+			default: false
+		},
 		trackId: {
 			type: Number,
 			default: undefined
@@ -43,21 +42,29 @@ export default {
 		};
 	},
 	computed: {
-		// Map the 'numberOfTracks' getter to the component's computed properties
-		...mapGetters(['trackListIds'])
+		...mapGetters(['trackListIds', 'myTrackListIds']),
+
+		currentTrackList() {
+			if (!this.isResult && !this.isMyTracks) {
+				return this.trackListIds;
+			} else if (!this.isResult && this.isMyTracks) {
+				return this.myTrackListIds;
+			} else {
+				return this.childrenIds;
+			}
+		}
 	},
 	mounted() {
-		if (this.trackId) {this.fetchTrackChildrenIds()}
-	},	
+		if (this.trackId) { this.fetchTrackChildrenIds() }
+	},
 
 	methods: {
 		async fetchTrackChildrenIds() {
 			try {
-				// Make an HTTP request to fetch options based on the heading
-				const response = await axios.get(`/index_results/${this.trackId}`);
-				this.childrenIds = response.data; // Update options with the fetched data
+				const response = await axios.get(`/index_results/${this.trackId}`)
+				this.childrenIds = response.data
 			} catch (error) {
-				console.error('Error fetching tracks:', error);
+				console.error('Error fetching tracks:', error)
 			}
 		}
 	}
