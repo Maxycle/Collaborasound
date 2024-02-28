@@ -44,6 +44,7 @@ import axios from 'axios'
 import Container from '../containers/Container.vue'
 import Autocomplete from '../search/Autocomplete.vue'
 import ParamButton from '../buttons/ParamButton.vue'
+import router from '../../entrypoints/router.js'
 
 export default {
 	components: {
@@ -95,10 +96,10 @@ export default {
 						title: this.trackTitle,
 						instrument_ids: this.instrumentParamIds,
 						music_genre_ids: this.genreParamIds,
-						location_id: this.locationParamId,
-						user_id: 3
+						location_id: this.locationParamId
 					}
 				})
+				router.push('/')
 				console.log('New track created:', response.data);
 			} catch (error) {
 				console.error('Error creating track:', error);
