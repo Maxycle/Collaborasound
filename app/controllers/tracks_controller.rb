@@ -26,6 +26,13 @@ class TracksController < ApplicationController
     render json: @children_tracks
   end
 
+	def myTracks
+    @listingss = MusicTrack.order(created_at: :desc).where(user_id: current_user.id, parent_id: nil)
+    @listingss = @listingss.select(:id)
+
+    render json: @listingss
+	end
+
   def show
     @music_track = MusicTrack.find(params[:id])
 		@music_genre_names = @music_track.music_genres.select(:id, :name)
@@ -53,6 +60,7 @@ class TracksController < ApplicationController
 
   def create
     @music_track = MusicTrack.new(track_params)
+		@music_track.user_id = current_user.id
 
     if @music_track.save
       render json: @music_track, status: :created
@@ -73,6 +81,6 @@ class TracksController < ApplicationController
   private
 
   def track_params
-		params.require(:music_track).permit(:title, :user_id, :location_id, :band_id, :parent_id, instrument_ids: [], music_genre_ids: [])
+		params.require(:music_track).permit(:title, :location_id, :band_id, :parent_id, instrument_ids: [], music_genre_ids: [])
 	end
 end
