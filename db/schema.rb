@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_22_180206) do
+ActiveRecord::Schema.define(version: 2024_02_29_163440) do
 
   create_table "bands", force: :cascade do |t|
     t.string "name"
@@ -59,10 +59,10 @@ ActiveRecord::Schema.define(version: 2024_02_22_180206) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id", null: false
-    t.integer "location_id", null: false
     t.integer "band_id"
     t.integer "parent_id"
-    t.index ["location_id"], name: "index_music_tracks_on_location_id"
+    t.float "latitude"
+    t.float "longitude"
     t.index ["parent_id"], name: "index_music_tracks_on_parent_id"
     t.index ["user_id"], name: "index_music_tracks_on_user_id"
   end
@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 2024_02_22_180206) do
   add_foreign_key "instrument_music_tracks", "music_tracks"
   add_foreign_key "music_genre_music_tracks", "music_genres"
   add_foreign_key "music_genre_music_tracks", "music_tracks"
-  add_foreign_key "music_tracks", "locations"
   add_foreign_key "music_tracks", "music_tracks", column: "parent_id", on_delete: :cascade
   add_foreign_key "music_tracks", "users"
 end

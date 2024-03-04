@@ -9,8 +9,6 @@ class TracksController < ApplicationController
       end
     elsif params[:genre].present?
       @listings = @listings.joins(:music_genres).where("music_genres.name LIKE ?", "%#{params[:genre]}%")
-    elsif params[:location].present?
-      @listings = @listings.joins(:locations).where("locations.name LIKE ?", "%#{params[:location]}%")
     end
 
     @listings = @listings.select(:id)
@@ -40,6 +38,8 @@ class TracksController < ApplicationController
     @author = @music_track.user.first_name
     @band_name = @music_track.band&.name || 'Krugh o marrons'
     @result = !@music_track.parent_id.nil?
+		@longitutde = @music_track.longitude
+		@latitude = @music_track.latitude
 
     render json: {
       id: @music_track.id,
@@ -50,7 +50,9 @@ class TracksController < ApplicationController
       music_genres: @music_genre_names,
       instruments: @instruments,
       band: @band_name,
-      isResult: @result
+      isResult: @result,
+			longitude: @longitutde,
+			latitude: @latitude
     }
   end
 
@@ -81,6 +83,6 @@ class TracksController < ApplicationController
   private
 
   def track_params
-		params.require(:music_track).permit(:title, :location_id, :band_id, :parent_id, instrument_ids: [], music_genre_ids: [])
+		params.require(:music_track).permit(:title, :band_id, :parent_id, :longitude, :latitude, instrument_ids: [], music_genre_ids: [])
 	end
 end

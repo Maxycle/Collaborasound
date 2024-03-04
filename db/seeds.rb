@@ -48,21 +48,11 @@ end
 end
 
 15.times do
-  unique_location = nil
-  while unique_location.nil? || Location.exists?(name: unique_location)
-    unique_location = Faker::Address.city
-  end
-
-  Location.create(name: unique_location)
-end
-
-15.times do
   music_genre_ids = MusicGenre.pluck(:id).sample(rand(1..4))
   instrument_ids = Instrument.pluck(:id).sample(rand(1..4))
 
   music_track = MusicTrack.create(
     title: Faker::Lorem.words(number: 3).join(' '),
-    location_id: Location.pluck(:id).sample,
     band_id: Band.pluck(:id).sample,
     user_id: User.pluck(:id).sample
   )
