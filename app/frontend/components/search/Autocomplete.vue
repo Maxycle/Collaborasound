@@ -97,9 +97,9 @@ export default {
 				default:
 					this.urlToFetch = '/tracks'
 			}
-		},
-	},
-};
+		}
+	}
+}
 </script>
 
   

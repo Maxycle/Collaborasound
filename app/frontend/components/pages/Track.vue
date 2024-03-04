@@ -1,7 +1,7 @@
 <template>
 	<Container>
 		<div class="w-4/5">
-			<div class="pb-2">{{ author }} in {{ band }} needs some {{ instrument }} to play some {{ genre }}</div>
+			<div class="pb-4">{{ author }} in {{ band }} needs some {{ instrument }} to play some {{ genre }}.</div>
 			<div class="flex justify-center space-x-4 pb-4">
 				<div class="border-2 border-red-400 bg-green-300 rounded-2xl p-4">listen to ze Track</div>
 				<div class="border-2 border-red-400 bg-green-300 rounded-2xl p-4">download ze track</div>
@@ -17,7 +17,7 @@
 <script>
 import Container from '../containers/Container.vue'
 import TracksList from '../tracks/TracksList.vue'
-import { mapGetters } from 'vuex'; // Import mapGetters
+import { mapGetters } from 'vuex'
 
 export default {
 	components: {
