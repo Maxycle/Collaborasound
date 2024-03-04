@@ -12,10 +12,11 @@
         <dl class="mt-16 grid grid-cols-4 gap-2 sm:mt-20 p-2 rounded-md bg-gradient-to-l from-anarcapYellow to-black border-2 border-gray-500">
           <div v-for="label in searchParams" class="text-white font-extrabold p-1 rounded drop-shadow-lg">{{ label.name }}</div>
           <div></div>
-          <div v-for="param in searchParams.slice(0, -1)" :key="param.name" class="">
+          <div v-for="param in searchParams" :key="param.name" class="">
+						<!-- <div v-for="param in searchParams.slice(0, -1)" :key="param.name" class=""> -->
             <Autocomplete :heading="param.name" @item-selected="addQueryParamToUrl" />
           </div>
-					<LocationInput class="w-full"/>
+					<!-- <Autocomplete is-location-input placeholder="Islamabood" class="w-full"/> -->
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="fetchTracks">Look
             for a project</button>
           <button
@@ -32,8 +33,8 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import Autocomplete from '../search/Autocomplete.vue';
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import LocationInput from '../map/LocationInput.vue'
+import { fetchTracks, fetchMyTracks } from '../../helpers/requests.js';
 
 const searchParams = [
   { name: 'Genre de zikmu', value: '12' },
@@ -48,33 +49,8 @@ let instrumentParam = ref('')
 let genreParam = ref('')
 let locationParam = ref('')
 
-const fetchTracks = async () => {
-  try {
-    const fetchedTracks = await store.dispatch('searchTracks', {
-      axios: axios.create(),
-      urlToFetch: urlToFetch.value,
-    });
-    console.log('Fetched tracks:', fetchedTracks);
-    router.push('/')
-  } catch (error) {
-    console.error('Error fetching tracks:', error);
-  }
-};
-
-const fetchMyTracks = async () => {
-  try {
-    const fetchedMyTracks = await store.dispatch('searchTracks', {
-      axios: axios.create(),
-      urlToFetch: '/my_tracks',
-    });
-    console.log('Fetched my tracks:', fetchedMyTracks);
-  } catch (error) {
-    console.error('Error fetching my tracks:', error);
-  }
-};
-
 onMounted(() => {
-  fetchTracks();
+  fetchTracks(urlToFetch.value);
   fetchMyTracks();
 });
 
@@ -87,7 +63,7 @@ const addQueryParamToUrl = (obj) => {
       genreParam.value = obj.queryParamValue
       break;
     case 'Où ca ??':
-      locationParam.value = obj.queryParamValue
+      locationParam.value = obj.coordinates
       break;
     default:
       urlToFetch.value = '/tracks';
