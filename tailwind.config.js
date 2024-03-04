@@ -9,8 +9,16 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				'sans': ['Kode Mono', 'sans-serif']
-			}
+				'sans': ['Kode Mono', 'sans-serif'],
+				'sus': ['Barriecito', 'sans-serif']
+			},
+			backgroundImage:{
+        'anarcap': 'url(/home/maxycle/code/Collaborasound/app/assets/images/Flag_of_Anarcho-capitalism.svg.png)',
+				'croco': 'url(/home/maxycle/code/Collaborasound/app/assets/images/croco.jpg)'
+      },
+			colors: {
+        'anarcapYellow': '#fdfd00',
+      },
 		},
 	},
 	plugins: [],

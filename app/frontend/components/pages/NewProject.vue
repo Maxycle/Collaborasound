@@ -5,10 +5,10 @@
 				<div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
 					<div class="grid grid-cols-4 gap-2 sm:mt-20">
 						<div v-for="label in newProjectParams" class="">{{ label.name }}</div>
-						<div>Track title</div>
-						<div v-for="param in newProjectParams" :key="param.name" class="">
+						<div v-for="param in newProjectParams.slice(0, -2)" :key="param.name" class="">
 							<Autocomplete :heading="param.name" @item-selected="addParameters" @item-inputted="onNewItemInput" />
 						</div>
+						<LocationInput class="w-full" @item-selected="addParameters" />
 						<input type="text" id="autocomplete" placeholder="Allah Akbar" v-model="trackTitle"
 							class="bg-gray-300 py-2 px-4 flex justify-between items-center rounded w-full" />
 						<div class="flex flex-wrap mt-2">
@@ -45,12 +45,15 @@ import Container from '../containers/Container.vue'
 import Autocomplete from '../search/Autocomplete.vue'
 import ParamButton from '../buttons/ParamButton.vue'
 import router from '../../entrypoints/router.js'
+import LocationInput from '../map/LocationInput.vue'
+import store from '../../store/index.js'
 
 export default {
 	components: {
 		Container,
 		Autocomplete,
-		ParamButton
+		ParamButton,
+		LocationInput
 	},
 
 	data() {
@@ -68,10 +71,13 @@ export default {
 			instrumentsList: [],
 			genresList: [],
 			locationsList: [],
+			longitude: undefined,
+			latitude: undefined,
 			newProjectParams: [
 				{ name: 'Genre de zikmu', value: '12' },
 				{ name: 'Instrument recherchié', value: '300+' },
-				{ name: 'Où ca ??', value: '40' }
+				{ name: 'Où ça ?', value: '300+' },
+				{ name: 'Track title', value: '300+' }
 			]
 		}
 	},
@@ -86,19 +92,22 @@ export default {
 				await this.createResource('genres', this.newGenre, 'newGenre', 'genreParamIds');
 			}
 
-			if (this.locationParamId === undefined) {
-				await this.createResource('locations', this.newLocation, 'newLocation', 'locationParamIds');
-			}
-
 			try {
 				const response = await axios.post('/tracks', {
 					music_track: {
 						title: this.trackTitle,
 						instrument_ids: this.instrumentParamIds,
 						music_genre_ids: this.genreParamIds,
-						location_id: this.locationParamId
+						longitude: this.longitude,
+						latitude: this.latitude
 					}
 				})
+
+				await Promise.all([
+					this.fetchTracks(),
+					this.fetchMyTracks()
+				])
+
 				router.push('/')
 				console.log('New track created:', response.data);
 			} catch (error) {
@@ -132,7 +141,8 @@ export default {
 						break;
 					case 'Où ca ??':
 						this.locationsList.push(obj.queryParamValue)
-						this.locationParamId = obj.queryParamId
+						this.longitude = obj.coordinates[0]
+						this.latitude = obj.coordinates[1]
 						break;
 					default:
 						this.urlToFetch = '/tracks';
@@ -172,8 +182,31 @@ export default {
 				default:
 					this.urlToFetch = '/tracks';
 			}
-		}
+		},
 
+		async fetchTracks() {
+			try {
+				const fetchedTracks = await store.dispatch('searchTracks', {
+					axios: axios.create(),
+					urlToFetch: '/tracks',
+				});
+				console.log('Fetched tracks:', fetchedTracks);
+			} catch (error) {
+				console.error('Error fetching tracks:', error);
+			}
+		},
+
+		async fetchMyTracks() {
+			try {
+				const fetchedMyTracks = await store.dispatch('searchTracks', {
+					axios: axios.create(),
+					urlToFetch: '/my_tracks',
+				});
+				console.log('Fetched my tracks:', fetchedMyTracks);
+			} catch (error) {
+				console.error('Error fetching my tracks:', error);
+			}
+		}
 	}
 }
 </script>

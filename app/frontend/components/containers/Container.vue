@@ -6,9 +6,8 @@
 				@click="openModal">{{ mapButtonText }}</button>
 			<button v-else class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
 				@click="closeModal">{{ mapButtonText }}</button>
-			<div v-if="isModalOpen" class="w-4/6 mb-2">
+			<div v-if="isModalOpen" class="w-4/6 transition ease-in-out duration-1000 opacity-100 mb-2">
 				<div class="">
-					<button class="close" @click="closeModal">&times;</button>
 					<Map class="w-full" />
 				</div>
 			</div>
