@@ -23,10 +23,6 @@ export default {
 		heading: {
 			type: String,
 			default: 'ta mère en short',
-		},
-		isLocationInput: {
-			type: Boolean,
-			default: false
 		}
 	},
 
@@ -94,6 +90,7 @@ export default {
 				this.selectedItemId = undefined;
 				this.filteredItems = []
 				this.$emit('item-selected', { queryParam: this.heading, queryParamValue: '', queryParamId: undefined });
+				this.$emit('item-inputted', { queryParam: this.heading, queryParamValue: '', queryParamId: undefined });
 			} else {
 				this.$emit('item-inputted', { queryParam: this.heading, queryParamValue: this.selectedItem });
 				if (this.heading !== 'Track title') { this.filterItems() };
