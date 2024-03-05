@@ -13,11 +13,9 @@
           <div v-for="label in searchParams" class="text-white font-extrabold p-1 rounded drop-shadow-lg">{{ label.name }}</div>
           <div></div>
           <div v-for="param in searchParams" :key="param.name" class="">
-						<!-- <div v-for="param in searchParams.slice(0, -1)" :key="param.name" class=""> -->
             <Autocomplete :heading="param.name" @item-selected="addQueryParamToUrl" />
           </div>
-					<!-- <Autocomplete is-location-input placeholder="Islamabood" class="w-full"/> -->
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="fetchTracks">Look
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="fetch">Look
             for a project</button>
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded col-start-2 col-span-2 mt-4"><router-link
@@ -29,12 +27,10 @@
 </template>
   
 <script setup>
-import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
 import Autocomplete from '../search/Autocomplete.vue';
 import { ref, onMounted } from 'vue';
-import LocationInput from '../map/LocationInput.vue'
 import { fetchTracks, fetchMyTracks } from '../../helpers/requests.js';
+import { useRouter } from 'vue-router';
 
 const searchParams = [
   { name: 'Genre de zikmu', value: '12' },
@@ -42,17 +38,21 @@ const searchParams = [
   { name: 'Où ca ??', value: '40' },
 ];
 
-const store = useStore();
-const router = useRouter()
 let urlToFetch = ref('/tracks');
 let instrumentParam = ref('')
 let genreParam = ref('')
 let locationParam = ref('')
+const router = useRouter()
 
 onMounted(() => {
   fetchTracks(urlToFetch.value);
   fetchMyTracks();
 });
+
+const fetch = () => {
+	fetchTracks(urlToFetch.value)
+	router.push('/')
+};
 
 const addQueryParamToUrl = (obj) => {
   switch (obj.queryParam) {

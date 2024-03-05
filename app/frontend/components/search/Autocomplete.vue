@@ -17,8 +17,6 @@
 
 <script>
 import axios from 'axios'
-import mapboxgl from 'mapbox-gl'
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 
 export default {
 	props: {
@@ -42,7 +40,6 @@ export default {
 			placeholder: 'ta gueule',
 			geocoderResult: [],
 			selectedItemId: undefined,
-			itemSelected: false,
 			coordinates: []
 		};
 	},
@@ -53,14 +50,10 @@ export default {
 
 	mounted() {
 		this.fetchOptions();
-		if (this.heading === 'Où ca ??') {
-			this.initializeGeocoder()
-		}
 	},
 
 	computed: {
 		dropdownOptions() {
-			console.log('the dropdownn', this.geocoderResult, this.filteredItems)
 			if (this.heading === 'Où ca ??') return this.geocoderResult
 			else return this.filteredItems
 		}
@@ -94,7 +87,6 @@ export default {
 				this.$emit('item-selected', { queryParam: this.heading, queryParamValue: this.selectedItem, queryParamId: this.selectedItemId })
 			}
 			this.filteredItems = []
-			this.itemSelected = true
 		},
 
 		onInput() {
@@ -104,7 +96,7 @@ export default {
 				this.$emit('item-selected', { queryParam: this.heading, queryParamValue: '', queryParamId: undefined });
 			} else {
 				this.$emit('item-inputted', { queryParam: this.heading, queryParamValue: this.selectedItem });
-				this.filterItems();
+				if (this.heading !== 'Track title') { this.filterItems() };
 			}
 		},
 
@@ -122,7 +114,7 @@ export default {
 					this.urlToFetch = '/locations'
 					this.placeholder = 'Islamaveryverybad'
 					break;
-				case 'trackTitle':
+				case 'Track title':
 					this.urlToFetch = '/locs'
 					this.placeholder = 'Allah akbar'
 					break;
@@ -131,34 +123,16 @@ export default {
 			}
 		},
 
-		initializeGeocoder() {
-			mapboxgl.accessToken = 'pk.eyJ1Ijoia2ViYWJhY29vbCIsImEiOiJjbHQ1bnVoN3QwMmdnMmxzMGppenlja3VvIn0.IFeRK3uh56z33cdb--8Nbw';
-			this.geocoder = new MapboxGeocoder({
-				accessToken: mapboxgl.accessToken,
-				types: 'country,region,place,postcode,locality,neighborhood'
-			});
-
-			this.geocoder.addTo(this.$refs.geocoder);
-			const results = document.getElementById('result');
-
-			this.geocoder.on('result', (e) => {
-				this.geocoderResult = JSON.stringify(e.result, null, 2);
-			})
-
-			this.geocoder.on('clear', () => {
-				this.geocoderResult = []
-			})
-		},
-
 		handleInputGeocoder() {
-			if (this.geoQuery.length >= 4) {
+			if (this.geoQuery === '') { this.geocoderResult = [] }
+			else if (this.geoQuery.length >= 4) {
 				this.triggerGeocodeRequest();
 			}
 		},
 
 		async triggerGeocodeRequest() {
 			try {
-				const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.geoQuery}.json?proximity=ip&access_token=pk.eyJ1Ijoia2ViYWJhY29vbCIsImEiOiJja211d2g3NXoxMjl2MnZteGxsNWt4YzBxIn0.UB5MlsB8rIYsBg3nSJBs_A`)
+				const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.geoQuery}.json?access_token=pk.eyJ1Ijoia2ViYWJhY29vbCIsImEiOiJjbHQ1bnVoN3QwMmdnMmxzMGppenlja3VvIn0.IFeRK3uh56z33cdb--8Nbw`)
 				this.geocoderResult = response.data.features
 				console.log('in ze geocoder', this.geocoderResult)
 			} catch (error) {

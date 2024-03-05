@@ -5,12 +5,9 @@
 				<div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
 					<div class="grid grid-cols-4 gap-2 sm:mt-20">
 						<div v-for="label in newProjectParams" class="">{{ label.name }}</div>
-						<div v-for="param in newProjectParams.slice(0, -2)" :key="param.name" class="">
+						<div v-for="param in newProjectParams" :key="param.name" class="">
 							<Autocomplete :heading="param.name" @item-selected="addParameters" @item-inputted="onNewItemInput" />
 						</div>
-						<LocationInput class="w-full" @item-selected="addParameters" />
-						<input type="text" id="autocomplete" placeholder="Allah Akbar" v-model="trackTitle"
-							class="bg-gray-300 py-2 px-4 flex justify-between items-center rounded w-full" />
 						<div class="flex flex-wrap mt-2">
 							<div v-for="item in genresList" :key="item">
 								<ParamButton :heading="item" removable @removedd="removeParameters('Genre de zikmu', item)" />
@@ -22,9 +19,6 @@
 							</div>
 						</div>
 						<div class="flex flex-wrap mt-2">
-							<div v-for="item in locationsList" :key="item">
-								<ParamButton :heading="item" removable @removedd="removeParameters('Où ca ??', item)" />
-							</div>
 						</div>
 						<button
 							class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded col-start-2 col-span-2 mt-2">Upload
@@ -45,15 +39,14 @@ import Container from '../containers/Container.vue'
 import Autocomplete from '../search/Autocomplete.vue'
 import ParamButton from '../buttons/ParamButton.vue'
 import router from '../../entrypoints/router.js'
-import LocationInput from '../map/LocationInput.vue'
-import store from '../../store/index.js'
+import { fetchTracks, fetchMyTracks } from '../../helpers/requests.js'
+
 
 export default {
 	components: {
 		Container,
 		Autocomplete,
-		ParamButton,
-		LocationInput
+		ParamButton
 	},
 
 	data() {
@@ -76,7 +69,7 @@ export default {
 			newProjectParams: [
 				{ name: 'Genre de zikmu', value: '12' },
 				{ name: 'Instrument recherchié', value: '300+' },
-				{ name: 'Où ça ?', value: '300+' },
+				{ name: 'Où ca ??', value: '300+' },
 				{ name: 'Track title', value: '300+' }
 			]
 		}
@@ -104,8 +97,8 @@ export default {
 				})
 
 				await Promise.all([
-					this.fetchTracks(),
-					this.fetchMyTracks()
+					fetchTracks('/tracks'),
+					fetchMyTracks()
 				])
 
 				router.push('/')
@@ -160,8 +153,8 @@ export default {
 					this.genreParamId = undefined
 					this.newGenre = obj.queryParamValue
 					break;
-				case 'Où ca ??':
-					this.newLocation = obj.queryParamValue
+				case 'Track title':
+					this.trackTitle = obj.queryParamValue
 					break;
 				default:
 					this.urlToFetch = 'kruigh';
@@ -176,35 +169,8 @@ export default {
 				case 'Genre de zikmu':
 					this.genresList = this.genresList.filter(item => item !== itemToRemove);
 					break;
-				case 'Où ca ??':
-					this.locationsList = this.locationsList.filter(item => item !== itemToRemove);
-					break;
 				default:
 					this.urlToFetch = '/tracks';
-			}
-		},
-
-		async fetchTracks() {
-			try {
-				const fetchedTracks = await store.dispatch('searchTracks', {
-					axios: axios.create(),
-					urlToFetch: '/tracks',
-				});
-				console.log('Fetched tracks:', fetchedTracks);
-			} catch (error) {
-				console.error('Error fetching tracks:', error);
-			}
-		},
-
-		async fetchMyTracks() {
-			try {
-				const fetchedMyTracks = await store.dispatch('searchTracks', {
-					axios: axios.create(),
-					urlToFetch: '/my_tracks',
-				});
-				console.log('Fetched my tracks:', fetchedMyTracks);
-			} catch (error) {
-				console.error('Error fetching my tracks:', error);
 			}
 		}
 	}

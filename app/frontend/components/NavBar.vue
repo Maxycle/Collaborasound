@@ -5,7 +5,7 @@
 				@click="setActiveButton('home')">home</router-link></button>
 		<button :class="{ 'bg-blue-600': activeButton === 'myTracks' }"
 			class="p-2 hover:bg-red-400 transition-colors duration-300 hover:font-bold rounded-full"><router-link
-				to="/my_tracks" @click="setActiveButton('myTracks')">My tracks</router-link></button>
+				to="/my_own_tracks" @click="setActiveButton('myTracks')">My tracks</router-link></button>
 		<button class="p-2 hover:bg-red-400 transition-colors duration-300 hover:font-bold rounded-full"
 			@click="redirectToEditProfile">Edit profile</button>
 		<button class="p-2 hover:bg-red-400 transition-colors duration-300 hover:font-bold rounded-full"
@@ -35,7 +35,7 @@ export default {
 					case '/':
 						this.activeButton = 'home';
 						break;
-					case '/my_tracks':
+					case '/my_own_tracks':
 						this.activeButton = 'myTracks';
 						break;
 					case '/users/edit':
