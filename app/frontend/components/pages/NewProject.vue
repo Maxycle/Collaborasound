@@ -77,11 +77,11 @@ export default {
 
 	methods: {
 		async createTrack() {
-			if (this.instrumentParamId === undefined) {
+			if (this.instrumentParamId === undefined && this.newInstrument !== '') {
 				await this.createResource('instruments', this.newInstrument, 'newInstrument', 'instrumentParamIds');
 			}
 
-			if (this.genreParamId === undefined) {
+			if (this.genreParamId === undefined && this.newGenre !== '') {
 				await this.createResource('genres', this.newGenre, 'newGenre', 'genreParamIds');
 			}
 
@@ -123,14 +123,18 @@ export default {
 			if (obj.queryParamValue !== '') {
 				switch (obj.queryParam) {
 					case 'Instrument recherchié':
-						this.instrumentsList.push(obj.queryParamValue)
-						this.instrumentParamId = obj.queryParamId
-						this.instrumentParamIds.push(this.instrumentParamId)
+						if (!this.instrumentsList.includes(obj.queryParamValue)) {
+							this.instrumentsList.push(obj.queryParamValue)
+							this.instrumentParamId = obj.queryParamId
+							this.instrumentParamIds.push(this.instrumentParamId)
+						}
 						break;
 					case 'Genre de zikmu':
-						this.genresList.push(obj.queryParamValue)
-						this.genreParamId = obj.queryParamId
-						this.genreParamIds.push(this.genreParamId)
+						if (!this.genresList.includes(obj.queryParamValue)) {
+							this.genresList.push(obj.queryParamValue)
+							this.genreParamId = obj.queryParamId
+							this.genreParamIds.push(this.genreParamId)
+						}
 						break;
 					case 'Où ca ??':
 						this.locationsList.push(obj.queryParamValue)
