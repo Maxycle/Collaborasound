@@ -1,12 +1,12 @@
 <template>
 	<div class="w-4/5">
 		<div
-			class="bg-orange-300 border-2 border-green-600 rounded-2xl flex items-center justify-center space-y-4 w-full p-4">
+			class="flex items-center justify-center w-full p-4">
 			<div class="w-4/5">
 				<p v-if="isMyTracks" class="text-2xl font-bold flex justify-center">My tracks</p>
 				<p v-else-if="isResult" class="text-2xl font-bold flex justify-center">People's collaborations</p>
 				<div v-for="track in currentTrackList" :key="track.title" class="">
-					<TrackCard :trackId="track.id" class="w-full my-2" />
+					<TrackCard :trackId="track.id" class="w-full my-6" />
 				</div>
 			</div>
 		</div>

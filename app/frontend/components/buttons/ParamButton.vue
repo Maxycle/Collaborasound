@@ -1,9 +1,9 @@
 <template>
-	<button class="flex justify-center min-w-16 border-2 
-		border-green-500 text-xs m-1 hover:bg-blue-700 text-white py-2 px-2 rounded-full" :class="bgColor">
+	<button class="flex justify-center min-w-16 border border-green-600 text-xs m-1 hover:bg-blue-700 py-2 px-2 rounded"
+		:class="bgColor">
 		{{ heading }}
 		<div v-if="removable">
-			<CloseRound class="ml-2 w-4" @click="kruigh" />
+			<CloseRound class="ml-2 w-4" @click="remove" />
 		</div>
 	</button>
 </template>
@@ -23,7 +23,7 @@ export default {
 		},
 		color: {
 			type: String,
-			default: 'yellow'
+			default: 'lime'
 		},
 		removable: {
 			type: Boolean,
@@ -49,12 +49,18 @@ export default {
 				case 'blue':
 					return 'bg-blue-400'
 					break;
+				case 'grey':
+					return 'bg-slate-400'
+					break;
+				case 'lime':
+					return 'bg-lime-100'
+					break;
 			}
 		}
 	},
 
 	methods: {
-		kruigh() {
+		remove() {
 			this.$emit('removedd', this.heading)
 		}
 	}

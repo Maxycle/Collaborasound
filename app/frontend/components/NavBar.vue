@@ -1,14 +1,14 @@
 <template>
-	<div class="flex justify-end space-x-2 bg-blue-300 pr-4">
-		<button :class="{ 'bg-blue-600': activeButton === 'home' }"
-			class="p-2 hover:bg-red-400 transition-colors duration-300 hover:font-bold rounded-full"><router-link to="/"
-				@click="setActiveButton('home')">home</router-link></button>
-		<button :class="{ 'bg-blue-600': activeButton === 'myTracks' }"
-			class="p-2 hover:bg-red-400 transition-colors duration-300 hover:font-bold rounded-full"><router-link
-				to="/my_own_tracks" @click="setActiveButton('myTracks')">My tracks</router-link></button>
-		<button class="p-2 hover:bg-red-400 transition-colors duration-300 hover:font-bold rounded-full"
+	<div class="flex justify-end space-x-2 bg-zinc-300 pr-4">
+		<button :class="{ 'bg-zinc-200': activeButton === 'home' }"
+			class="p-2 hover:bg-anarcapYellow transition-colors duration-300 hover:font-bold rounded"><router-link to="/"
+				@click="setActiveButton('/')">home</router-link></button>
+		<button :class="{ 'bg-zinc-200': activeButton === 'myTracks' }"
+			class="p-2 hover:bg-anarcapYellow transition-colors duration-300 hover:font-bold rounded"><router-link
+				to="/my_own_tracks" @click="setActiveButton('/my_own_tracks')">My tracks</router-link></button>
+		<button class="p-2 hover:bg-anarcapYellow transition-colors duration-300 hover:font-bold rounded"
 			@click="redirectToEditProfile">Edit profile</button>
-		<button class="p-2 hover:bg-red-400 transition-colors duration-300 hover:font-bold rounded-full"
+		<button class="p-2 hover:bg-anarcapYellow transition-colors duration-300 hover:font-bold rounded"
 			@click="logout">Logout</button>
 	</div>
 </template>

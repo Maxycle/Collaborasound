@@ -1,38 +1,39 @@
 <template>
 	<div class="relative isolate w-full">
-		<div class="border-2 border-green-600 p-4 flex justify-between rounded-2xl items-center">
-			<img src="/home/maxycle/code/Collaborasound/app/assets/images/Flag_of_Anarcho-capitalism.svg.png" alt=""
+		<img src="/home/maxycle/code/Collaborasound/app/assets/images/Flag_of_Anarcho-capitalism.svg.png" alt=""
 			class="absolute inset-0 -z-10 h-full w-full object-fill md:object-center rounded-2xl" />
-			<div class="w-1/3 flex">
-				<div>
-					<p>The title: {{ trackData.title }}</p>
-					<p>Ze author: {{ trackData.author }}</p>
-					<p>Ze band: {{ trackData.band }}</p>
+		<div class="p-4 rounded-2xl shadow-lg shadow-stone-400">
+			<div class="flex justify-center pb-2">
+				<div class="max-w-fit rounded bg-lime-100 border border-green-600 p-2">
+					<p class="font-bold text-2xl flex justify-center">"{{ trackData.title }}"</p>
+					<div class="text-lg">{{ headers.origin }} &nbsp;<span class="font-bold">{{ trackData.author }}</span></div>
 				</div>
-				<div>
-					<p class="flex items-center justify-center mx-2">Music style</p>
+			</div>
+			<div class="flex items-center justify-between">
+				<div v-if="trackData && trackData.music_genres && trackData.music_genres.length">
+					<p class="text-center mx-2">Music style</p>
 					<div v-for="genre in trackData.music_genres" :key="genre.name" class="flex items-center justify-center">
 						<ParamButton :heading="genre.name" />
 					</div>
 				</div>
-				<div>
-					<p class="flex items-center justify-center">Instruments</p>
+				<div class="bg-lime-100 border border-green-600 rounded h-10 p-2 flex items-center justify-center w-1/4">
+					<div class="">listen</div>
+				</div>
+				<button class="bg-lime-100 border border-green-600 rounded h-10 p-2 flex items-center justify-center w-1/4">
+					<div v-if="!trackData.isResult">
+						<router-link :to="{ name: 'track', params: { zeTrackId: trackId } }" @click="sendTrackDetailsToVuex">
+							<p>Track id: {{ trackId }}</p>
+						</router-link>
+					</div>
+					<div v-else>See what people say {{ trackId }}</div>
+				</button>
+				<div v-if="trackData && trackData.instruments && trackData.instruments.length">
+					<p class="text-center text-white">{{ headers.instruments }}</p>
 					<div v-for="instrument in trackData.instruments" :key="instrument.name"
 						class="flex items-center justify-center">
-						<ParamButton :heading="instrument.name" color="red" />
+						<ParamButton :heading="instrument.name" />
 					</div>
 				</div>
-			</div>
-			<div class="bg-blue-200 border-2 border-green-600 rounded-2xl h-10 p-2 flex items-center justify-center w-1/4">
-				<div class="">listen</div>
-			</div>
-			<div class="bg-blue-200 border-2 border-green-600 rounded-2xl h-10 p-2 flex items-center justify-center w-1/4">
-				<div v-if="!trackData.isResult">
-					<router-link :to="{ name: 'track', params: { zeTrackId: trackId } }" @click="sendTrackDetailsToVuex">
-						<p>Track id: {{ trackId }}</p>
-					</router-link>
-				</div>
-				<div v-else>See what people say {{ trackId }}</div>
 			</div>
 		</div>
 	</div>
@@ -55,7 +56,8 @@ export default {
 
 	data() {
 		return {
-			trackData: {}
+			trackData: {},
+			instrumentHeader: ''
 		};
 	},
 
@@ -69,11 +71,18 @@ export default {
 		this.fetchTrackDetails(this.trackId)
 	},
 
+	computed: {
+		headers() {
+			return this.trackData.isResult ? { instruments: `${this.instrumentHeader} added`, origin: 'instrument(s) added by' } : { instruments: `${this.instrumentHeader} needed`, origin: 'from' }
+		}
+	},
+
 	methods: {
 		async fetchTrackDetails() {
 			try {
 				const response = await axios.get(`/tracks/${this.trackId}`)
 				this.trackData = response.data
+				this.instrumentHeader = this.trackData.instruments.length > 1 ? 'Instruments' : 'Instrument'
 				console.log('in ze track', this.trackData)
 			} catch (error) {
 				console.error('Error fetching tracks:', error)
