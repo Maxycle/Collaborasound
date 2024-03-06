@@ -1,11 +1,9 @@
 <template>
 	<NavBar />
 	<div class="w-full">
-		<div class="flex flex-col items-center py-4 bg-orange-100">
-			<button v-if="!isModalOpen" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
-				@click="openModal">{{ mapButtonText }}</button>
-			<button v-else class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
-				@click="closeModal">{{ mapButtonText }}</button>
+		<div class="flex flex-col items-center py-4 bg-zinc-200">
+			<button v-if="$route.path === '/'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
+				@click="toggleModal">{{ mapButtonText }}</button>
 			<div v-if="isModalOpen" class="w-4/6 transition ease-in-out duration-1000 opacity-100 mb-2">
 				<div class="">
 					<Map class="w-full" />
@@ -37,11 +35,8 @@ export default {
 	},
 
 	methods: {
-		openModal() {
-			this.isModalOpen = true;
-		},
-		closeModal() {
-			this.isModalOpen = false;
+		toggleModal() {
+			this.isModalOpen = !this.isModalOpen
 		}
 	}
 }
