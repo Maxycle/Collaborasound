@@ -25,7 +25,7 @@ class TracksController < ApplicationController
   end
 
 	def myTracks
-    @listingss = MusicTrack.order(created_at: :desc).where(user_id: current_user.id, parent_id: nil)
+    @listingss = MusicTrack.order(created_at: :desc).where(user_id: current_user.id)
     @listingss = @listingss.select(:id)
 
     render json: @listingss
@@ -35,11 +35,19 @@ class TracksController < ApplicationController
     @music_track = MusicTrack.find(params[:id])
 		@music_genre_names = @music_track.music_genres.select(:id, :name)
     @instruments = @music_track.instruments.select(:id, :name)
-    @author = @music_track.user.first_name
+    author = @music_track.user
+		@author = {
+			id: author.id,
+			first_name: author.first_name,
+			last_name: author.last_name
+		}
     @band_name = @music_track.band&.name || 'Krugh o marrons'
     @result = !@music_track.parent_id.nil?
 		@longitutde = @music_track.longitude
 		@latitude = @music_track.latitude
+		@children = @music_track.children
+		@conversation_id = @music_track.conversation&.id
+		@has_conversation = Conversation.exists?(music_track_id: @music_track.id)
 
     render json: {
       id: @music_track.id,
@@ -52,7 +60,10 @@ class TracksController < ApplicationController
       band: @band_name,
       isResult: @result,
 			longitude: @longitutde,
-			latitude: @latitude
+			latitude: @latitude,
+			conversation_id: @conversation_id,
+			has_conversation: @has_conversation,
+			children: @children
     }
   end
 

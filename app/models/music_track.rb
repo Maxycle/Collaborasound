@@ -31,5 +31,6 @@ class MusicTrack < ApplicationRecord
     belongs_to :band, class_name: "Band", foreign_key: "band_id", optional: true
     belongs_to :parent, class_name: "MusicTrack", foreign_key: "parent_id", optional: true
     has_many :children, class_name: "MusicTrack", foreign_key: "parent_id", dependent: :destroy
+		has_one :conversation
 end
 

@@ -6,6 +6,7 @@ import Track from '../components/pages/Track.vue'
 import NewProject from '../components/pages/NewProject.vue'
 import MyTracks from '../components/pages/MyTracks.vue'
 import NewResultTrack from '../components/pages/NewResultTrack.vue'
+import Conversation from '../components/conversations/Conversation.vue'
 
 
 const routes = [
@@ -14,7 +15,8 @@ const routes = [
   { path: '/track/:zeTrackId', name: 'track', component: Track },
   { path: '/new_project', component: NewProject },
 	{ path: '/my_own_tracks', component: MyTracks },
-	{ path: '/upload_track/:zeTrackId', name: 'result_track', component: NewResultTrack }
+	{ path: '/upload_track/:zeTrackId', name: 'result_track', component: NewResultTrack },
+	{ path: '/conversation/:conversationId',name: 'conversation', component: Conversation }
 ];
 
 const router = createRouter({
