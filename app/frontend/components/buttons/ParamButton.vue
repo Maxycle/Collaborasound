@@ -1,11 +1,11 @@
 <template>
-	<button class="flex justify-center min-w-16 border border-green-600 text-xs m-1 hover:bg-blue-700 py-2 px-2 rounded"
-		:class="bgColor">
+	<div class="flex justify-center min-w-16 border text-xs m-1 py-2 px-2 rounded"
+		:class="colorClasses">
 		{{ heading }}
-		<div v-if="removable">
+		<button v-if="removable">
 			<CloseRound class="ml-2 w-4" @click="remove" />
-		</div>
-	</button>
+		</button>
+	</div>
 </template>
 
 <script>
@@ -24,6 +24,10 @@ export default {
 		color: {
 			type: String,
 			default: 'lime'
+		},
+		borderColor: {
+			type: String,
+			default: 'black'
 		},
 		removable: {
 			type: Boolean,
@@ -56,6 +60,22 @@ export default {
 					return 'bg-lime-100'
 					break;
 			}
+		},
+
+		borderGColor() {
+			switch (this.borderColor) {
+				case 'anarcapYellow':
+					return 'border-anarcapYellow'
+					break;
+				case 'black':
+					return 'border-black'
+					break;
+				
+			}
+		},
+
+		colorClasses() {
+			return this.bgColor + ' ' + this.borderGColor
 		}
 	},
 
