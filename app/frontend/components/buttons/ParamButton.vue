@@ -44,10 +44,10 @@ export default {
 					return 'bg-yellow-400'
 					break;
 				case 'red':
-					return 'bg-red-400'
+					return 'bg-orange-300'
 					break;
 				case 'blue':
-					return 'bg-blue-400'
+					return 'bg-teal-300'
 					break;
 				case 'grey':
 					return 'bg-slate-400'
