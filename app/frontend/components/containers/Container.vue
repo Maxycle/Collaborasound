@@ -1,8 +1,7 @@
 <template>
-	<NavBar />
 	<div class="w-full">
-		<div class="flex flex-col items-center py-4 bg-zinc-200">
-			<button v-if="$route.path === '/'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
+		<div class="flex flex-col items-center py-4 bg-zinc-200 h-full">
+			<button v-if="$route.path === '/'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 shadow-lg shadow-zinc-600"
 				@click="toggleModal">{{ mapButtonText }}</button>
 			<div v-if="isModalOpen" class="w-4/6 transition ease-in-out duration-1000 opacity-100 mb-2">
 				<div class="">
@@ -15,11 +14,9 @@
 </template>
 
 <script>
-import NavBar from '../NavBar.vue'
 import Map from '../map/Map.vue'
 export default {
 	components: {
-		NavBar,
 		Map
 	},
 

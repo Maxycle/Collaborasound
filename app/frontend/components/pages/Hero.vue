@@ -12,18 +12,20 @@
 						}}</div>
 						<div></div>
 						<div v-for="param in searchParams" :key="param.name" class="">
-							<Autocomplete :heading="param.name" @item-selected="addQueryParamToUrl" />
+							<Autocomplete :heading="param.name" @item-selected="addQueryParamToUrl" class="shadow-lg shadow-zinc-600" />
 						</div>
-						<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="fetch">Look
+						<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg shadow-zinc-600"
+							@click="fetch">Look
 							for a project</button>
 						<button
-							class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded col-start-2 col-span-2 mt-4"><router-link
+							class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded col-start-2 col-span-2 mt-4 shadow-lg shadow-zinc-600"><router-link
 								to="/new_project" class="">Start a new collaboration</router-link></button>
 					</dl>
 				</div>
 			</div>
 		</div>
 	</div>
+	<NavBar />
 </template>
   
 <script setup>
@@ -31,6 +33,7 @@ import Autocomplete from '../search/Autocomplete.vue';
 import { ref, onMounted } from 'vue';
 import { fetchTracks, fetchMyTracks } from '../../helpers/requests.js';
 import { useRouter } from 'vue-router';
+import NavBar from '../NavBar.vue'
 
 const searchParams = [
 	{ name: 'Genre de zikmu', value: '12' },
