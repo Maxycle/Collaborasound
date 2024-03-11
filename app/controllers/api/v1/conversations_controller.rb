@@ -12,11 +12,23 @@ module Api
       end
 
       # GET /api/v1/conversations/:id
-      def show
-        render json: {
-					music_track_parent: @conversation.music_track_id
+			def show
+				@messages = @conversation.messages.order(created_at: :asc).map do |message|
+					{
+						id: message.id,
+						content: message.content,
+						user_first_name: message.user.first_name,
+						created_at: message.created_at,
+						updated_at: message.updated_at
+					}
+				end
+				
+				render json: {
+					music_track_parent: @conversation.music_track_id,
+					messages: @messages
 				}
-      end
+			end
+			
 
       # POST /api/v1/conversations
       def create

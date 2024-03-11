@@ -20,6 +20,7 @@ module Api
       # POST /api/v1/conversations/:conversation_id/messages
       def create
         @message = @conversation.messages.new(message_params)
+				@message.user = current_user
         if @message.save
           render json: @message, status: :created
         else
