@@ -43,11 +43,14 @@ class TracksController < ApplicationController
 		}
     @band_name = @music_track.band&.name || 'Krugh o marrons'
     @result = !@music_track.parent_id.nil?
+		@parent_track_user_id = @music_track.parent ? @music_track.parent.user.id : nil
+		@isMyProject = @parent_track_user_id === current_user.id
 		@longitutde = @music_track.longitude
 		@latitude = @music_track.latitude
 		@children = @music_track.children
 		@conversation_id = @music_track.conversation&.id
 		@has_conversation = Conversation.exists?(music_track_id: @music_track.id)
+		@logged_in_user_id = current_user.id
 
     render json: {
       id: @music_track.id,
@@ -59,11 +62,14 @@ class TracksController < ApplicationController
       instruments: @instruments,
       band: @band_name,
       isResult: @result,
+			parent_track_user_id: @parent_track_user_id,
+			isMyProject: @isMyProject,
 			longitude: @longitutde,
 			latitude: @latitude,
 			conversation_id: @conversation_id,
 			has_conversation: @has_conversation,
-			children: @children
+			children: @children,
+			logged_in_user_id: @logged_in_user_id
     }
   end
 
