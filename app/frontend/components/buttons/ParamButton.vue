@@ -1,6 +1,5 @@
 <template>
-	<div class="flex justify-center min-w-16 border text-xs m-1 py-2 px-2 rounded"
-		:class="colorClasses">
+	<div class="flex justify-center min-w-16 border text-xs m-1 py-2 px-2 rounded" :class="colorClasses">
 		{{ heading }}
 		<button v-if="removable">
 			<CloseRound class="ml-2 w-4" @click="remove" />
@@ -70,7 +69,10 @@ export default {
 				case 'black':
 					return 'border-black'
 					break;
-				
+				case 'blue':
+					return 'border-teal-300'
+					break;
+
 			}
 		},
 

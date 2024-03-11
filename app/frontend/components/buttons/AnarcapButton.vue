@@ -1,9 +1,9 @@
 <template>
-	<button class="relative bg-black text-white rounded-lg shadow-lg shadow-stone-400 p-4" @mouseover="showImage"
+	<button class="relative bg-black text-white hover:text-red-500  hover:font-extrabold rounded-lg shadow-lg shadow-stone-400 p-4" @mouseover="showImage"
 		@mouseout="hideImage">
 		<img ref="imageRef" src="/home/maxycle/code/Collaborasound/app/assets/images/Flag_of_Anarcho-capitalism.svg.png"
 			alt="yellow and black triangles"
-			class="absolute inset-0 h-full w-full object-fill md:object-center rounded-lg hidden" />
+			class="absolute inset-0 h-full -z-10 w-full object-fill md:object-center rounded-lg hidden" />
 		<slot></slot>
 	</button>
 </template>

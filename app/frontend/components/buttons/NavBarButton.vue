@@ -1,6 +1,6 @@
 <template>
 	<button class="relative rounded-lg p-4 " :class="{
-		'transition hover:text-red-500 hover:font-extrabold hover:-translate-y-1 hover:scale-110 duration-300': !isActive,
+		'transition hover:text-red-500 hover:font-extrabold hover:scale-110 duration-300': !isActive,
 		'font-black shadow-stone-400 shadow-lg': isActive
 	}" @mouseover="showImage" @mouseout="hideImage">
 		<img ref="imageRef" src="/home/maxycle/code/Collaborasound/app/assets/images/Flag_of_Anarcho-capitalism.svg.png"

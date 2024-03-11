@@ -1,5 +1,5 @@
 <template>
-  <Container>
+  <Container class="overflow-y-auto">
     <TracksList />
   </Container>
 </template>
