@@ -50,7 +50,7 @@ export default {
 					return 'bg-orange-300'
 					break;
 				case 'blue':
-					return 'bg-teal-300'
+					return 'bg-teal-100'
 					break;
 				case 'grey':
 					return 'bg-slate-400'

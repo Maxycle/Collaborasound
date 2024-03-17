@@ -1,7 +1,7 @@
 <template>
 	<div class="relative isolate sm:py-4">
 		<div class="absolute top-4 left-4 font-bold text-xl pl-6">Collaborasound<span class="font-thin">.org</span></div>
-		<img src="/home/maxycle/code/Collaborasound/app/assets/images/Flag_of_Anarcho-capitalism.svg.png" alt="anarcap flag"
+		<img src="../../../Flag_of_Anarcho-capitalism.png" alt="anarcap flag"
 			class="absolute inset-0 -z-10 h-full w-full object-fill md:object-center " />
 		<div class="mx-auto max-w-7xl px-6 lg:px-8">
 			<div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
@@ -12,9 +12,11 @@
 						}}</div>
 						<div></div>
 						<div v-for="param in searchParams" :key="param.name" class="">
-							<Autocomplete :heading="param.name" @item-selected="addQueryParamToUrl" class="shadow-lg shadow-zinc-600" />
+							<Autocomplete :heading="param.name" @item-selected="addQueryParamToUrl"
+								class="shadow-lg shadow-zinc-600" />
 						</div>
-						<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg shadow-zinc-600"
+						<button
+							class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg shadow-zinc-600"
 							@click="fetch">Look
 							for a project</button>
 						<button
@@ -27,7 +29,7 @@
 	</div>
 	<NavBar />
 </template>
-  
+
 <script setup>
 import Autocomplete from '../search/Autocomplete.vue';
 import { ref, onMounted } from 'vue';
