@@ -1,23 +1,21 @@
 <template>
-	<div class="flex justify-end space-x-2 bg-zinc-300 pr-4">
-		<NavBarButton :isActive="activeButton === 'home'" class="">
-			<span class="relative"><router-link to="/" @click="setActiveButton('/')">home</router-link></span>
+	<div class="flex justify-end space-x-2 bg-zinc-200 pr-4 shadow-lg shadow-stone-400">
+		<NavBarButton :isActive="$route.path === '/'">
+			<span class="relative"><router-link to="/">Home</router-link></span>
 		</NavBarButton>
-		<NavBarButton :isActive="activeButton === 'myTracks'">
-			<span class="relative"><router-link to="/my_own_tracks" @click="setActiveButton('/my_own_tracks')">My
-					tracks</router-link></span>
+		<NavBarButton :isActive="$route.path === '/my_own_tracks'">
+			<span class="relative"><router-link to="/my_own_tracks">My tracks</router-link></span>
 		</NavBarButton>
 		<NavBarButton @click="redirectToEditProfile">
-			<span class="relative"><router-link to="/">Edit profile</router-link></span>
+			<span class="relative">Edit profile</span>
 		</NavBarButton>
 		<NavBarButton @click="logout">
-			<span class="relative"><router-link to="/">Logout</router-link></span>
+			<span class="relative">Logout</span>
 		</NavBarButton>
 	</div>
 </template>
 
 <script>
-
 import axios from 'axios'
 import NavBarButton from './buttons/NavBarButton.vue'
 
@@ -30,31 +28,9 @@ export default {
 			activeButton: ''
 		}
 	},
-
 	mounted() {
 		this.setActiveButton(this.$route.path);
 	},
-
-	computed: {
-		setActiveButton() {
-			return (routePath) => {
-				switch (routePath) {
-					case '/':
-						this.activeButton = 'home';
-						break;
-					case '/my_own_tracks':
-						this.activeButton = 'myTracks';
-						break;
-					case '/users/edit':
-						this.activeButton = 'editProfile';
-						break;
-					default:
-						this.activeButton = '';
-				}
-			}
-		}
-	},
-
 	methods: {
 		async logout() {
 			try {
