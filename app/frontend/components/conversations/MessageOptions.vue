@@ -1,6 +1,7 @@
 <template>
-	<div class="m-1 w-fit p-2 rounded-md shadow-lg shadow-zinc-400">
-		{{ content }}
+	<div class="border border-black rounded-md shadow-lg shadow-zinc-400">
+		<div class="p-2 rounded-t-md hover:bg-zinc-300">Delete</div>
+		<div class="p-2 rounded-b-md hover:bg-zinc-300">Edit</div>
 	</div>
 </template>
 
