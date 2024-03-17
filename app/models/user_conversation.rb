@@ -1,10 +1,8 @@
 # == Schema Information
 #
-# Table name: messages
+# Table name: user_conversations
 #
 #  id              :integer          not null, primary key
-#  content         :text
-#  deleted         :boolean          default(FALSE)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  conversation_id :integer          not null
@@ -12,15 +10,18 @@
 #
 # Indexes
 #
-#  index_messages_on_conversation_id  (conversation_id)
-#  index_messages_on_user_id          (user_id)
+#  index_user_conversations_on_conversation_id  (conversation_id)
+#  index_user_conversations_on_user_id          (user_id)
 #
 # Foreign Keys
 #
 #  conversation_id  (conversation_id => conversations.id)
 #  user_id          (user_id => users.id)
 #
-class Message < ApplicationRecord
-    belongs_to :conversation, dependent: :destroy
-    belongs_to :user, dependent: :destroy
+# app/models/user_conversation.rb
+class UserConversation < ApplicationRecord
+  belongs_to :user
+  belongs_to :conversation
+
+  # You can also add validations or additional methods here if needed
 end

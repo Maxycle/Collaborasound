@@ -56,9 +56,13 @@ module Api
       end
 
 			def by_track
-				conversation = Conversation.find_by(music_track_id: params[:trackId])
-				render json: conversation
-			end
+        conversation = Conversation.find_by(music_track_id: params[:trackId])
+        if conversation
+          render json: conversation
+        else
+          render json: { error: 'Conversation not found' }, status: :not_found
+        end
+      end
 
       private
 
