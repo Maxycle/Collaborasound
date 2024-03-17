@@ -10,7 +10,11 @@ import './main.scss';
 const app = createApp(App);
 app.use(store);
 app.use(router);
-
+app.config.errorHandler = (err, instance, info) => {
+  console.log('wrong !!! err =>', err)
+	console.log('wrong !!! instance =>', instance)
+	console.log('wrong !!! info =>', info)
+}
 if (import.meta.env.DEV) {
   // Enable Vue Devtools in development environment
   app.config.devtools = true;

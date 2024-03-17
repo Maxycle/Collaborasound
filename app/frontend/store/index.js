@@ -24,7 +24,7 @@ export default createStore({
 			try {
 				const response = await axios.get(urlToFetch)
 				urlToFetch === '/my_tracks' ? commit('setMyTracksIds', response.data) : commit('setTracksIds', response.data)
-				console.log('Fetched tracks:', response.data)
+				console.log('Fetched tracks vuex:', response.data)
 				return response.data
 			} catch (error) {
 				console.error('Error fetching tracks:', error)

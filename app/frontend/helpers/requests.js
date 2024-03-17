@@ -7,7 +7,7 @@ export async function fetchTracks(url) {
       axios: axios.create(),
       urlToFetch: url,
     });
-    console.log('Fetched tracks:', fetchedTracks);
+    console.log('Fetched tracks requests:', fetchedTracks);
   } catch (error) {
     console.error('Error fetching tracks:', error);
   }
