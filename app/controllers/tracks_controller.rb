@@ -12,7 +12,10 @@ class TracksController < ApplicationController
     end
 
     @listings = @listings.select(:id)
-    render json: @listings
+    render json: {
+			trackListIds: @listings,
+			logged_in_user: current_user
+		}
   end  
 
   def index_results
@@ -49,8 +52,6 @@ class TracksController < ApplicationController
 		@latitude = @music_track.latitude
 		@children = @music_track.children
 		@conversation_id = @music_track.conversation&.id
-		@has_conversation = Conversation.exists?(music_track_id: @music_track.id)
-		@logged_in_user_id = current_user.id
 
     render json: {
       id: @music_track.id,
@@ -67,9 +68,7 @@ class TracksController < ApplicationController
 			longitude: @longitutde,
 			latitude: @latitude,
 			conversation_id: @conversation_id,
-			has_conversation: @has_conversation,
-			children: @children,
-			logged_in_user_id: @logged_in_user_id
+			children: @children
     }
   end
 

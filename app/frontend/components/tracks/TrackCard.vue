@@ -24,7 +24,7 @@
 						<p v-if="trackData && !isTrackPage" class="font-bold text-2xl flex justify-center">"{{
 			trackData.title
 		}}"</p>
-						<div v-if="!isMyOwnTracksPage" class="text-lg">{{ headers.origin }}<span class="font-bold">{{
+						<div v-if="!isMyOwnTracksPage" class="text-lg">{{ headers.origin }} <span class="font-bold">{{
 			trackData.author ?
 				trackData.author.first_name : 'Unknown' }}</span></div>
 					</div>
@@ -74,6 +74,7 @@ import axios from 'axios'
 import ParamButton from '../buttons/ParamButton.vue'
 import router from '../../entrypoints/router.js'
 import { nextTick } from 'vue'
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -109,6 +110,8 @@ export default {
 	},
 
 	computed: {
+		...mapGetters(['loggedInUser']),
+
 		headers() {
 			return this.trackData.isResult ? { instruments: `${this.instrumentHeader} added`, origin: 'instrument(s) added by' } : { instruments: `${this.instrumentHeader} needed`, origin: 'from' }
 		},
@@ -123,7 +126,7 @@ export default {
 
 		doNotshowSeeConversationButton() {
 			if (this.trackData.author) {
-				return this.isTrackPage && !this.trackData.isMyProject && (this.trackData.logged_in_user_id !== this.trackData.author.id)
+				return this.isTrackPage && !this.trackData.isMyProject && (this.loggedInUser.id !== this.trackData.author.id)
 			}
 		},
 
@@ -147,9 +150,9 @@ export default {
 
 		goToConversation() {
 			this.sendTrackDetailsToVuex()
-			if (this.trackData.isResult && !this.trackData.has_conversation) {
+			if (this.trackData.isResult && !this.trackData.conversation_id) {
 				this.createConversation()
-			} else if (this.trackData.isResult && this.trackData.has_conversation) {
+			} else if (this.trackData.isResult && this.trackData.conversation_id) {
 				router.push(`/conversation/${this.trackData.conversation_id}`)
 			}
 		},
