@@ -9,16 +9,16 @@
 			</h1>
 			<div ref="conversationContainer" class="overflow-y-auto w-full">
 				<div v-for="(message, index) in conversationData.messages" :key="message.id" class="mx-6 my-4">
-					<div class="flex" :class="{ 'justify-end': isRightSideMessage(message) }"
-						@mouseover="showMessageOptionsButton(index)" @mouseleave="hideMessageOptions">
+					<div class="flex" :class="{ 'justify-end': isRightSideMessage(message) }" @mouseover="onMouseOver(index)"
+						@mouseleave="onMouseLeave">
 						<div class="flex items-center"
 							:class="{ 'flex-row-reverse': message.user_first_name !== firstMessageUserName }">
 							<Message :bgColor="bgColor(message)" :ids="{ message: message.id, conversation: conversationId }"
 								:isDeleted="message.isDeleted" :content="message.content"
 								:is-edit-mode="message.id === messageBeingEditedId" @message-modified="onMessageModified" />
-							<div v-show="messageOptionIndex === index" ref="messageOptions" class="relative"
-								:class="{ 'right-0': message.user_first_name !== firstMessageUserName }">
-								<CloseRound class="w-6 mx-2" @click="toggleMessageOptions" />
+							<div v-show="messageOptionIndex === index && message.user_id === loggedInUser.id" ref="messageOptions"
+								class="relative" :class="{ 'right-0': message.user_first_name !== firstMessageUserName }">
+								<CloseRound class="w-6 mx-2" @click="toggleMessageOptions(message.user_id)" />
 								<div v-show="showOptions" class="absolute -top-6" :class="optionsPositionSide(message)">
 									<MessageOptions :ids="{ message: message.id, conversation: conversationId }"
 										@edit-message="onEditMessage" @message-modified="this.fetchCurrentConversation" />
@@ -76,7 +76,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(['trackBasicData']),
+		...mapGetters(['trackBasicData', 'loggedInUser']),
 		placeholder() {
 			return 'Say something cool mozertrucker !!'
 		},
@@ -125,19 +125,19 @@ export default {
 			return item.user_first_name !== this.firstMessageUserName ? 'bg-yellow-300' : 'bg-red-300'
 		},
 
-		showMessageOptionsButton(index) {
+		onMouseOver(index) {
 			this.messageOptionIndex = index
 		},
 
-		toggleMessageOptions() {
-			this.showOptions = !this.showOptions
+		toggleMessageOptions(userId) {
+			if (this.loggedInUser.id === userId) { this.showOptions = !this.showOptions }
 		},
 
 		isRightSideMessage(message) {
 			return message.user_first_name !== this.firstMessageUserName
 		},
 
-		hideMessageOptions() {
+		onMouseLeave() {
 			this.showOptions = false
 		},
 

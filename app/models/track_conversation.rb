@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: conversations
+# Table name: track_conversations
 #
 #  id             :integer          not null, primary key
 #  created_at     :datetime         not null
@@ -9,13 +9,13 @@
 #
 # Indexes
 #
-#  index_conversations_on_music_track_id  (music_track_id)
+#  index_track_conversations_on_music_track_id  (music_track_id)
 #
 # Foreign Keys
 #
 #  music_track_id  (music_track_id => music_tracks.id)
 #
-class Conversation < ApplicationRecord
+class TrackConversation < ApplicationRecord
 		has_many :user_conversations
 		has_many :users, through: :user_conversations
     belongs_to :music_track

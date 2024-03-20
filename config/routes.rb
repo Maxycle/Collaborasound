@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 	namespace :api do
 		namespace :v1 do
-			resources :conversations do
+			resources :track_conversations do
 				resources :messages
 			end
 		end

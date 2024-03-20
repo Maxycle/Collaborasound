@@ -38,7 +38,7 @@ export default {
 	methods: {
 		async deleteMessage() {
 			try {
-				const response = await axios.patch(`/api/v1/conversations/${this.ids.conversation}/messages/${this.ids.message}`, {
+				const response = await axios.patch(`/api/v1/track_conversations/${this.ids.conversation}/messages/${this.ids.message}`, {
 					message: {
 						deleted: true
 					}

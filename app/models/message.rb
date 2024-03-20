@@ -2,25 +2,25 @@
 #
 # Table name: messages
 #
-#  id              :integer          not null, primary key
-#  content         :text
-#  deleted         :boolean          default(FALSE)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  conversation_id :integer          not null
-#  user_id         :integer          not null
+#  id                    :integer          not null, primary key
+#  content               :text
+#  deleted               :boolean          default(FALSE)
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  track_conversation_id :integer          not null
+#  user_id               :integer          not null
 #
 # Indexes
 #
-#  index_messages_on_conversation_id  (conversation_id)
-#  index_messages_on_user_id          (user_id)
+#  index_messages_on_track_conversation_id  (track_conversation_id)
+#  index_messages_on_user_id                (user_id)
 #
 # Foreign Keys
 #
-#  conversation_id  (conversation_id => conversations.id)
-#  user_id          (user_id => users.id)
+#  track_conversation_id  (track_conversation_id => track_conversations.id)
+#  user_id                (user_id => users.id)
 #
 class Message < ApplicationRecord
-    belongs_to :conversation, dependent: :destroy
+    belongs_to :track_conversation, dependent: :destroy
     belongs_to :user, dependent: :destroy
 end

@@ -51,7 +51,7 @@ class TracksController < ApplicationController
 		@longitutde = @music_track.longitude
 		@latitude = @music_track.latitude
 		@children = @music_track.children
-		@conversation_id = @music_track.conversation&.id
+		@conversation_id = @music_track.track_conversation&.id
 
     render json: {
       id: @music_track.id,

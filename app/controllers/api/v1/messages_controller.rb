@@ -46,7 +46,7 @@ module Api
       private
 
       def set_conversation
-        @conversation = Conversation.find(params[:conversation_id])
+        @conversation = TrackConversation.find(params[:track_conversation_id])
       end
 
       def set_message

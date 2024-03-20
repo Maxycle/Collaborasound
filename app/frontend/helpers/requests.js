@@ -27,7 +27,7 @@ export async function fetchMyTracks() {
 
 export async function fetchConversation(conversationId) {
 	try {
-		const response = await axios.get(`/api/v1/conversations/${conversationId}`)
+		const response = await axios.get(`/api/v1/track_conversations/${conversationId}`)
 		return response.data
 	} catch (error) {
 		console.error('Error fetching conversation:', error)

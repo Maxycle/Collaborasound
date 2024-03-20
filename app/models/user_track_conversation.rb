@@ -19,9 +19,9 @@
 #  user_id          (user_id => users.id)
 #
 # app/models/user_conversation.rb
-class UserConversation < ApplicationRecord
+class UserTrackConversation < ApplicationRecord
   belongs_to :user
-  belongs_to :conversation
+  belongs_to :track_conversation
 
   # You can also add validations or additional methods here if needed
 end

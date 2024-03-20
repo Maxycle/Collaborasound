@@ -2,12 +2,12 @@
 
 module Api
   module V1
-    class ConversationsController < ApplicationController
+    class TrackConversationsController < ApplicationController
       before_action :set_conversation, only: [:show, :update, :destroy]
 
       # GET /api/v1/conversations
       def index
-        @conversations = Conversation.all
+        @conversations = TrackConversation.all
         render json: @conversations
       end
 
@@ -34,7 +34,7 @@ module Api
 
       # POST /api/v1/conversations
       def create
-        @conversation = Conversation.new(conversation_params)
+        @conversation = TrackConversation.new(conversation_params)
         if @conversation.save
           render json: @conversation, status: :created
         else
@@ -58,7 +58,7 @@ module Api
       end
 
 			def by_track
-        conversation = Conversation.find_by(music_track_id: params[:trackId])
+        conversation = TrackConversation.find_by(music_track_id: params[:trackId])
         if conversation
           render json: conversation
         else
@@ -69,7 +69,7 @@ module Api
       private
 
       def set_conversation
-        @conversation = Conversation.find(params[:id])
+        @conversation = TrackConversation.find(params[:id])
       end
 
       def conversation_params
