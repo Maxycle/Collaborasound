@@ -24,3 +24,12 @@ export async function fetchMyTracks() {
     console.error('Error fetching my tracks:', error);
   }
 }
+
+export async function fetchConversation(conversationId) {
+	try {
+		const response = await axios.get(`/api/v1/conversations/${conversationId}`)
+		return response.data
+	} catch (error) {
+		console.error('Error fetching conversation:', error)
+	}
+}

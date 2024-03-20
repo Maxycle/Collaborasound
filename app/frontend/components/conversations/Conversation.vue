@@ -13,12 +13,15 @@
 						@mouseover="showMessageOptionsButton(index)" @mouseleave="hideMessageOptions">
 						<div class="flex items-center"
 							:class="{ 'flex-row-reverse': message.user_first_name !== firstMessageUserName }">
-							<Message :class="bgColor(message)" :content="message.content" class="" />
+							<Message :bgColor="bgColor(message)" :ids="{ message: message.id, conversation: conversationId }"
+								:isDeleted="message.isDeleted" :content="message.content"
+								:is-edit-mode="message.id === messageBeingEditedId" @message-modified="onMessageModified" />
 							<div v-show="messageOptionIndex === index" ref="messageOptions" class="relative"
 								:class="{ 'right-0': message.user_first_name !== firstMessageUserName }">
 								<CloseRound class="w-6 mx-2" @click="toggleMessageOptions" />
 								<div v-show="showOptions" class="absolute -top-6" :class="optionsPositionSide(message)">
-									<MessageOptions />
+									<MessageOptions :ids="{ message: message.id, conversation: conversationId }"
+										@edit-message="onEditMessage" @message-modified="this.fetchCurrentConversation" />
 								</div>
 							</div>
 						</div>
@@ -46,6 +49,7 @@ import Message from './Message.vue'
 import MessageOptions from './MessageOptions.vue'
 import CloseRound from '../svg/CloseRound.vue'
 import { mapGetters } from 'vuex'
+import { fetchConversation } from '../../helpers/requests.js'
 
 export default {
 	components: {
@@ -62,12 +66,13 @@ export default {
 			conversationData: {},
 			myInput: '',
 			messageOptionIndex: undefined,
-			showOptions: false
+			showOptions: false,
+			messageBeingEditedId: undefined
 		}
 	},
 
 	mounted() {
-		this.fetchConversation()
+		this.fetchCurrentConversation(this.conversationId)
 	},
 
 	computed: {
@@ -90,15 +95,9 @@ export default {
 	},
 
 	methods: {
-		async fetchConversation() {
-			try {
-				const response = await axios.get(`/api/v1/conversations/${this.conversationId}`)
-				this.conversationData = response.data
-				this.scrollToBottom()
-				console.log('in ze conversation', this.conversationData)
-			} catch (error) {
-				console.error('Error fetching conversation:', error)
-			}
+		async fetchCurrentConversation(conversationId) {
+			this.conversationData = await fetchConversation(conversationId)
+			this.scrollToBottom()
 		},
 
 		async writeMessage() {
@@ -108,7 +107,8 @@ export default {
 						content: this.myInput
 					}
 				})
-				this.fetchConversation()
+				this.myInput = ''
+				this.fetchCurrentConversation(this.conversationId)
 				console.log('conversation posted', response.data)
 			} catch (error) {
 				console.error('Error posting conversation:', error)
@@ -139,6 +139,15 @@ export default {
 
 		hideMessageOptions() {
 			this.showOptions = false
+		},
+
+		onEditMessage(messageId) {
+			this.messageBeingEditedId = messageId.message
+		},
+
+		async onMessageModified(conversationId) {
+			this.messageBeingEditedId = undefined
+			await this.fetchCurrentConversation(conversationId)
 		}
 	}
 }

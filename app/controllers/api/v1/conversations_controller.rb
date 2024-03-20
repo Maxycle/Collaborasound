@@ -17,7 +17,9 @@ module Api
 					{
 						id: message.id,
 						content: message.content,
+						isDeleted: message.deleted,
 						user_first_name: message.user.first_name,
+						user_id: message.user.id,
 						created_at: message.created_at,
 						updated_at: message.updated_at
 					}

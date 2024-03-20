@@ -4,12 +4,14 @@ export default createStore({
 	state: {
 		trackListIds: [],
 		myTrackListIds: [],
-		trackBasicData: {}
+		trackBasicData: {},
+		loggedInUser: undefined
 	},
 
 	mutations: {
 		setTracksIds(state, data) {
-			state.trackListIds = data;
+			state.trackListIds = data.trackListIds
+			state.loggedInUser = data.logged_in_user
 		},
 		setTrackBasicData(state, data) {
 			state.trackBasicData = data;
@@ -45,6 +47,9 @@ export default createStore({
 		},
 		myTrackListIds(state) {
 			return state.myTrackListIds
+		},
+		loggedInUser(state) {
+			return state.loggedInUser
 		}
 	}
 })
