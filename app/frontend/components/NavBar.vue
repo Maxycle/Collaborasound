@@ -23,14 +23,7 @@ export default {
 	components: {
 		NavBarButton
 	},
-	data() {
-		return {
-			activeButton: ''
-		}
-	},
-	mounted() {
-		this.setActiveButton(this.$route.path);
-	},
+
 	methods: {
 		async logout() {
 			try {
