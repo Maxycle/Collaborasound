@@ -59,14 +59,6 @@ export default {
 		}
 	},
 
-	mounted() {
-
-	},
-
-	computed: {
-
-	},
-
 	methods: {
 		async updateMessage() {
 			try {
@@ -81,7 +73,7 @@ export default {
 			} catch (error) {
 				console.error('Error posting conversation:', error)
 			}
-		},
+		}
 	}
 }
 </script>
