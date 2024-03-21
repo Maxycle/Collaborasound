@@ -25,7 +25,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_person_name
-	has_many :user_conversations
-  has_many :conversations, through: :user_conversations
+	has_and_belongs_to_many :track_conversations, join_table: :user_track_conversations
   has_many :music_tracks, dependent: :destroy
 end

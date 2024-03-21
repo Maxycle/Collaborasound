@@ -10,12 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_20_194401) do
+ActiveRecord::Schema.define(version: 2024_03_21_210511) do
 
   create_table "bands", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_conversations_on_user_id"
   end
 
   create_table "instrument_music_tracks", force: :cascade do |t|
@@ -37,17 +44,6 @@ ActiveRecord::Schema.define(version: 2024_03_20_194401) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "messages", force: :cascade do |t|
-    t.integer "track_conversation_id", null: false
-    t.integer "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.text "content"
-    t.boolean "deleted", default: false
-    t.index ["track_conversation_id"], name: "index_messages_on_track_conversation_id"
-    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "music_genre_music_tracks", force: :cascade do |t|
@@ -85,13 +81,15 @@ ActiveRecord::Schema.define(version: 2024_03_20_194401) do
     t.index ["music_track_id"], name: "index_track_conversations_on_music_track_id"
   end
 
-  create_table "user_conversations", force: :cascade do |t|
+  create_table "track_messages", force: :cascade do |t|
+    t.integer "track_conversation_id", null: false
     t.integer "user_id", null: false
-    t.integer "conversation_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["conversation_id"], name: "index_user_conversations_on_conversation_id"
-    t.index ["user_id"], name: "index_user_conversations_on_user_id"
+    t.text "content"
+    t.boolean "deleted", default: false
+    t.index ["track_conversation_id"], name: "index_track_messages_on_track_conversation_id"
+    t.index ["user_id"], name: "index_track_messages_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -108,15 +106,14 @@ ActiveRecord::Schema.define(version: 2024_03_20_194401) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "conversations", "users"
   add_foreign_key "instrument_music_tracks", "instruments"
   add_foreign_key "instrument_music_tracks", "music_tracks"
-  add_foreign_key "messages", "track_conversations"
-  add_foreign_key "messages", "users"
   add_foreign_key "music_genre_music_tracks", "music_genres"
   add_foreign_key "music_genre_music_tracks", "music_tracks"
   add_foreign_key "music_tracks", "music_tracks", column: "parent_id", on_delete: :cascade
   add_foreign_key "music_tracks", "users"
   add_foreign_key "track_conversations", "music_tracks"
-  add_foreign_key "user_conversations", "track_conversations", column: "conversation_id"
-  add_foreign_key "user_conversations", "users"
+  add_foreign_key "track_messages", "track_conversations"
+  add_foreign_key "track_messages", "users"
 end

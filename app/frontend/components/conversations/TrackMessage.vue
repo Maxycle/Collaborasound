@@ -62,13 +62,12 @@ export default {
 	methods: {
 		async updateMessage() {
 			try {
-				const response = await axios.patch(`/api/v1/track_conversations/${this.ids.conversation}/messages/${this.ids.message}`, {
-					message: {
+				const response = await axios.patch(`/api/v1/track_conversations/${this.ids.conversation}/track_messages/${this.ids.message}`, {
+					track_message: {
 						content: this.myEditedInput
 					}
 				})
 				this.$emit('message-modified', this.ids.conversation)
-				this.myEditedInput = ''
 				console.log('conversation posted', response.data)
 			} catch (error) {
 				console.error('Error posting conversation:', error)

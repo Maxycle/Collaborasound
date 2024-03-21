@@ -13,7 +13,7 @@
 						@mouseleave="onMouseLeave">
 						<div class="flex items-center"
 							:class="{ 'flex-row-reverse': message.user_first_name !== firstMessageUserName }">
-							<Message :bgColor="bgColor(message)" :ids="{ message: message.id, conversation: conversationId }"
+							<TrackMessage :bgColor="bgColor(message)" :ids="{ message: message.id, conversation: conversationId }"
 								:isDeleted="message.isDeleted" :content="message.content"
 								:is-edit-mode="message.id === messageBeingEditedId" @message-modified="onMessageModified" />
 							<div v-show="messageOptionIndex === index && message.user_id === loggedInUser.id" ref="messageOptions"
@@ -45,7 +45,7 @@ import axios from 'axios'
 import TrackCard from '../tracks/TrackCard.vue'
 import Container from '../containers/Container.vue'
 import AnarcapButton from '../buttons/AnarcapButton.vue'
-import Message from './Message.vue'
+import TrackMessage from './TrackMessage.vue'
 import MessageOptions from './MessageOptions.vue'
 import CloseRound from '../svg/CloseRound.vue'
 import { mapGetters } from 'vuex'
@@ -56,7 +56,7 @@ export default {
 		TrackCard,
 		Container,
 		AnarcapButton,
-		Message,
+		TrackMessage,
 		MessageOptions,
 		CloseRound
 	},
@@ -103,8 +103,8 @@ export default {
 
 		async writeMessage() {
 			try {
-				const response = await axios.post(`/api/v1/conversations/${this.conversationId}/messages`, {
-					message: {
+				const response = await axios.post(`/api/v1/track_conversations/${this.conversationId}/track_messages`, {
+					track_message: {
 						content: this.myInput
 					}
 				})

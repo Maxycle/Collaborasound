@@ -2,13 +2,13 @@
 
 module Api
   module V1
-    class MessagesController < ApplicationController
+    class TrackMessagesController < ApplicationController
       before_action :set_conversation
       before_action :set_message, only: [:show, :update, :destroy]
 
       # GET /api/v1/conversations/:conversation_id/messages
       def index
-        @messages = @conversation.messages
+        @messages = @conversation.track_messages
         render json: @messages
       end
 
@@ -19,7 +19,7 @@ module Api
 
       # POST /api/v1/conversations/:conversation_id/messages
       def create
-        @message = @conversation.messages.new(message_params)
+        @message = @conversation.track_messages.new(message_params)
 				@message.user = current_user
         if @message.save
           render json: @message, status: :created
@@ -50,11 +50,11 @@ module Api
       end
 
       def set_message
-        @message = @conversation.messages.find(params[:id])
+        @message = @conversation.track_messages.find(params[:id])
       end
 
       def message_params
-        params.require(:message).permit(:content, :deleted)
+        params.require(:track_message).permit(:content, :deleted)
       end
     end
   end

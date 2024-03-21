@@ -13,7 +13,7 @@ module Api
 
       # GET /api/v1/conversations/:id
 			def show
-				@messages = @conversation.messages.order(created_at: :asc).map do |message|
+				@messages = @conversation.track_messages.order(created_at: :asc).map do |message|
 					{
 						id: message.id,
 						content: message.content,

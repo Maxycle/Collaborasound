@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 	namespace :api do
 		namespace :v1 do
 			resources :track_conversations do
-				resources :messages
+				resources :track_messages
 			end
 		end
 	end
