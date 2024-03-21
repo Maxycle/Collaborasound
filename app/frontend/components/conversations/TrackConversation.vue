@@ -21,7 +21,7 @@
 								<CloseRound class="w-6 mx-2" @click="toggleMessageOptions(message.user_id)" />
 								<div v-show="showOptions" class="absolute -top-6" :class="optionsPositionSide(message)">
 									<MessageOptions :ids="{ message: message.id, conversation: conversationId }"
-										@edit-message="onEditMessage" @message-modified="this.fetchCurrentConversation" />
+										@edit-message="onEditMessage" @message-modified="this.onMessageModified" />
 								</div>
 							</div>
 						</div>
@@ -67,7 +67,8 @@ export default {
 			myInput: '',
 			messageOptionIndex: undefined,
 			showOptions: false,
-			messageBeingEditedId: undefined
+			messageBeingEditedId: undefined,
+			scroll: true
 		}
 	},
 
@@ -97,7 +98,7 @@ export default {
 	methods: {
 		async fetchCurrentConversation(conversationId) {
 			this.conversationData = await fetchConversation(conversationId)
-			this.scrollToBottom()
+			if (this.scroll) { this.scrollToBottom() }
 		},
 
 		async writeMessage() {
@@ -146,8 +147,10 @@ export default {
 		},
 
 		async onMessageModified(conversationId) {
-			this.messageBeingEditedId = undefined
+			this.scroll = false
 			await this.fetchCurrentConversation(conversationId)
+			this.messageBeingEditedId = undefined
+			this.scroll = true
 		}
 	}
 }
