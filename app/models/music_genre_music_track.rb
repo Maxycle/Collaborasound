@@ -2,11 +2,11 @@
 #
 # Table name: music_genre_music_tracks
 #
-#  id             :integer          not null, primary key
+#  id             :bigint           not null, primary key
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  music_genre_id :integer          not null
-#  music_track_id :integer          not null
+#  music_genre_id :bigint           not null
+#  music_track_id :bigint           not null
 #
 # Indexes
 #
@@ -15,10 +15,9 @@
 #
 # Foreign Keys
 #
-#  music_genre_id  (music_genre_id => music_genres.id)
-#  music_track_id  (music_track_id => music_tracks.id)
+#  fk_rails_...  (music_genre_id => music_genres.id)
+#  fk_rails_...  (music_track_id => music_tracks.id)
 #
-# app/models/Instrument_music_track.rb
 class MusicGenreMusicTrack < ApplicationRecord
   belongs_to :music_genre
   belongs_to :music_track

@@ -2,7 +2,7 @@
 #
 # Table name: music_tracks
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  latitude   :float
 #  longitude  :float
 #  title      :string
@@ -10,7 +10,7 @@
 #  updated_at :datetime         not null
 #  band_id    :integer
 #  parent_id  :integer
-#  user_id    :integer          not null
+#  user_id    :bigint           not null
 #
 # Indexes
 #
@@ -19,8 +19,8 @@
 #
 # Foreign Keys
 #
-#  parent_id  (parent_id => music_tracks.id) ON DELETE => cascade
-#  user_id    (user_id => users.id)
+#  fk_rails_...  (parent_id => music_tracks.id) ON DELETE => cascade
+#  fk_rails_...  (user_id => users.id)
 #
 class MusicTrack < ApplicationRecord
     belongs_to :user  

@@ -2,7 +2,7 @@
 #
 # Table name: users
 #
-#  id                     :integer          not null, primary key
+#  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  first_name             :string           default(""), not null
@@ -22,9 +22,10 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :jwt_authenticatable,
+				 jwt_revocation_strategy: JwtDenylist
 
   has_person_name
-	has_and_belongs_to_many :track_conversations, join_table: :user_track_conversations
+	has_many :messages, dependent: :destroy
   has_many :music_tracks, dependent: :destroy
 end

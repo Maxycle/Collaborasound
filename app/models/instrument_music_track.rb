@@ -2,11 +2,11 @@
 #
 # Table name: instrument_music_tracks
 #
-#  id             :integer          not null, primary key
+#  id             :bigint           not null, primary key
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  instrument_id  :integer          not null
-#  music_track_id :integer          not null
+#  instrument_id  :bigint           not null
+#  music_track_id :bigint           not null
 #
 # Indexes
 #
@@ -15,8 +15,8 @@
 #
 # Foreign Keys
 #
-#  instrument_id   (instrument_id => instruments.id)
-#  music_track_id  (music_track_id => music_tracks.id)
+#  fk_rails_...  (instrument_id => instruments.id)
+#  fk_rails_...  (music_track_id => music_tracks.id)
 #
 class InstrumentMusicTrack < ApplicationRecord
   belongs_to :instrument

@@ -1,4 +1,6 @@
 class TracksController < ApplicationController
+	skip_before_action :authenticate_user!, only: %i[index]
+
   def index
     @listings = MusicTrack.order(created_at: :desc).where(parent_id: nil)
   
@@ -51,7 +53,6 @@ class TracksController < ApplicationController
 		@longitutde = @music_track.longitude
 		@latitude = @music_track.latitude
 		@children = @music_track.children
-		@conversation_id = @music_track.track_conversation&.id
 
     render json: {
       id: @music_track.id,
@@ -67,7 +68,6 @@ class TracksController < ApplicationController
 			isMyProject: @isMyProject,
 			longitude: @longitutde,
 			latitude: @latitude,
-			conversation_id: @conversation_id,
 			children: @children
     }
   end

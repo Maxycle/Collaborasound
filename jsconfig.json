@@ -10,10 +10,10 @@
     "strict": true,
     "paths": {
       "@/*": ["app/*"],
-      "@/component*": ["app/frontend/components/*"]
+      "@/component*": ["frontend/components/*"]
     }
   },
-  "include": ["app/**/*", "app/frontend/components/*"],
+  "include": ["app/**/*", "frontend/components/*"],
   "exclude": [
     "**/dist",
     "**/node_modules",
